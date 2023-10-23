@@ -34,10 +34,7 @@ public class UserService {
                     currentUser.setPassword(user.getPassword());
                     return userRepository.save(currentUser);
                 })
-                .orElseGet(() -> {
-                    user.setId(id);
-                    return userRepository.save(user);
-                });
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
     }
 
     public void deleteById(Long id) {
