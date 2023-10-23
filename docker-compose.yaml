@@ -8,8 +8,8 @@ services:
       POSTGRES_PASSWORD: pass
       PGDATA: /data/postgres
       POSTGRES_DB: db
-      volumes:
-        - /some/to/postgres:/data/postgres
-      ports:
-        - "5432:5432"
-      restart: unless-stopped
+    volumes:
+      - /some/to/postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
