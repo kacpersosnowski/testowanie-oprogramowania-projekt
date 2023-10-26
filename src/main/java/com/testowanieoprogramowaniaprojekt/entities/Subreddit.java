@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Date;
 
@@ -18,9 +19,14 @@ public class Subreddit {
     @NotEmpty(message = "Name is mandatory.")
     private String name;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Subreddit() {
+        this.creationDate = new Date();
+    }
 }
