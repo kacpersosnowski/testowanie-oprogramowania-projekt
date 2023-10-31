@@ -1,6 +1,5 @@
 package com.testowanieoprogramowaniaprojekt.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -24,10 +23,9 @@ public class Comment {
     @NotEmpty(message = "Comment content is mandatory.")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "author_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private User author;
 
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -35,4 +33,8 @@ public class Comment {
 //    @OnDelete(action = OnDeleteAction.CASCADE)
 //    @JsonIgnore
 //    private Post post;
+
+    public Comment() {
+        this.creationDate = new Date();
+    }
 }
