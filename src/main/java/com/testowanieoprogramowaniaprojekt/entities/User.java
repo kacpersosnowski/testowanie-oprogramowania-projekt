@@ -1,9 +1,12 @@
 package com.testowanieoprogramowaniaprojekt.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,4 +22,8 @@ public class User {
 
     @NotEmpty(message = "Password is mandatory.")
     private String password;
+
+    @OneToMany(mappedBy = "author")
+    @JsonIgnore
+    private Set<Comment> comments;
 }
