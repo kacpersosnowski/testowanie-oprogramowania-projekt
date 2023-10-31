@@ -2,6 +2,7 @@ package com.testowanieoprogramowaniaprojekt.controllers;
 
 import com.testowanieoprogramowaniaprojekt.entities.Post;
 import com.testowanieoprogramowaniaprojekt.services.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,12 +26,12 @@ public class PostController {
     }
 
     @PostMapping
-    Post create(@RequestBody Post post) {
+    Post create(@Valid @RequestBody Post post) {
         return postService.save(post);
     }
 
     @PutMapping("/{id}")
-    Post update(@RequestBody Post post, @PathVariable Long id) {
+    Post update(@Valid @RequestBody Post post, @PathVariable Long id) {
         return postService.update(id, post);
     }
 
