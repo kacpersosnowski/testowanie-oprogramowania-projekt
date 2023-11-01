@@ -37,7 +37,6 @@ public class CommentController {
             throw new BadRequestException("Comment content is mandatory.");
         } else if(comment.getAuthor() == null) {
             throw new BadRequestException("Comment author is mandatory.");
-//        }
         } else if(comment.getPost() == null) {
             throw new BadRequestException("Comment post is mandatory.");
         }
