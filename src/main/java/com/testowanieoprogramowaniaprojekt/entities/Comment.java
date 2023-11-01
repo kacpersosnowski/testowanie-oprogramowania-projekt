@@ -28,11 +28,14 @@ public class Comment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User author;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "post_id", nullable = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "post_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Post post;
+
+//    @OneToMany
 //    @JsonIgnore
-//    private Post post;
+//    private Set<Vote> votes;
 
     public Comment() {
         this.creationDate = new Date();
