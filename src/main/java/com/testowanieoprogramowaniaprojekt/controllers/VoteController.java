@@ -1,18 +1,12 @@
 package com.testowanieoprogramowaniaprojekt.controllers;
 
-import com.testowanieoprogramowaniaprojekt.entities.Comment;
-import com.testowanieoprogramowaniaprojekt.entities.User;
 import com.testowanieoprogramowaniaprojekt.entities.Vote;
 import com.testowanieoprogramowaniaprojekt.exceptions.BadRequestException;
 import com.testowanieoprogramowaniaprojekt.services.VoteService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
