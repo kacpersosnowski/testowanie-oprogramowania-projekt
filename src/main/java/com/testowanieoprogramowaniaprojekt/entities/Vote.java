@@ -15,13 +15,12 @@ public class Vote {
     private VoteType voteType;
 
     @ManyToOne
-    @NotEmpty(message = "Post is mandatory.")
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "post_id", nullable = true)
     private Post post;
 
     @ManyToOne
     @NotEmpty(message = "Comment is mandatory.")
-    @JoinColumn(name = "comment_id", nullable = false)
+    @JoinColumn(name = "comment_id", nullable = true)
     private Comment comment;
 
     @ManyToOne
