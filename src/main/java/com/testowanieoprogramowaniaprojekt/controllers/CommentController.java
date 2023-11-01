@@ -37,6 +37,9 @@ public class CommentController {
             throw new BadRequestException("Comment content is mandatory.");
         } else if(comment.getAuthor() == null) {
             throw new BadRequestException("Comment author is mandatory.");
+//        }
+        } else if(comment.getPost() == null) {
+            throw new BadRequestException("Comment post is mandatory.");
         }
         return new ResponseEntity<>(commentService.save(comment), HttpStatus.CREATED);
     }
@@ -47,6 +50,8 @@ public class CommentController {
             throw new BadRequestException("Comment content is mandatory.");
         } else if(comment.getAuthor() == null) {
             throw new BadRequestException("Comment author is mandatory.");
+        } else if(comment.getPost() == null) {
+            throw new BadRequestException("Comment post is mandatory.");
         }
         return new ResponseEntity<>(commentService.update(id, comment), HttpStatus.OK);
     }
