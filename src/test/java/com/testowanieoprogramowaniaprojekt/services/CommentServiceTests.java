@@ -27,8 +27,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-public class CommentServiceTests {
+@SpringBootTest(classes = {CommentRepository.class, UserRepository.class, PostRepository.class})
+class CommentServiceTests {
 
     @Mock
     private CommentRepository commentRepository;
@@ -43,7 +43,7 @@ public class CommentServiceTests {
     private CommentService commentService;
 
     @Test
-    public void test_GetAllComments_Success() {
+    void test_GetAllComments_Success() {
         // given
         List<Comment> comments = new ArrayList<>(Arrays.asList(
                 TestDataBuilder.exampleComment().comment(),
@@ -59,7 +59,7 @@ public class CommentServiceTests {
     }
 
     @Test
-    public void test_GetCommentById_Success() {
+    void test_GetCommentById_Success() {
         // given
         Comment comment = TestDataBuilder.exampleComment().comment();
         Long commentId = 1L;
@@ -74,7 +74,7 @@ public class CommentServiceTests {
     }
 
     @Test
-    public void test_GetCommentById_Failure() {
+    void test_GetCommentById_Failure() {
         // given
         Long commentId = -1L;
 
@@ -88,7 +88,7 @@ public class CommentServiceTests {
     }
 
     @Test
-    public void test_CreateComment_Success() {
+    void test_CreateComment_Success() {
         // given
         Comment commentToBeCreated = TestDataBuilder.exampleComment().comment();
 
@@ -107,7 +107,7 @@ public class CommentServiceTests {
 
     @ParameterizedTest
     @MethodSource("provideInvalidComments")
-    public void test_CreateComment_FailureInvalidRequestData(Comment invalidComment) {
+    void test_CreateComment_FailureInvalidRequestData(Comment invalidComment) {
         assertThrows(BadRequestException.class, () -> commentService.save(invalidComment));
     }
 
@@ -116,7 +116,7 @@ public class CommentServiceTests {
     }
 
     @Test
-    public void test_CreateComment_FailureUserNotFound() {
+    void test_CreateComment_FailureUserNotFound() {
         // given
         Comment commentToBeCreated = TestDataBuilder.exampleComment().comment();
 
@@ -129,7 +129,7 @@ public class CommentServiceTests {
     }
 
     @Test
-    public void test_CreateComment_FailurePostNotFound() {
+    void test_CreateComment_FailurePostNotFound() {
         // given
         Comment commentToBeCreated = TestDataBuilder.exampleComment().comment();
 
@@ -142,7 +142,7 @@ public class CommentServiceTests {
     }
 
     @Test
-    public void test_UpdateComment_Success() {
+    void test_UpdateComment_Success() {
         // given
         Comment existingComment = TestDataBuilder.exampleComment().comment();
         Comment updatedComment = TestDataBuilder.exampleComment2().comment();
@@ -162,14 +162,14 @@ public class CommentServiceTests {
 
     @ParameterizedTest
     @MethodSource("provideInvalidComments")
-    public void test_UpdateComment_FailureInvalidRequestData(Comment invalidComment) {
+    void test_UpdateComment_FailureInvalidRequestData(Comment invalidComment) {
         Comment existingComment = TestDataBuilder.exampleComment().comment();
 
         assertThrows(BadRequestException.class, () -> commentService.update(existingComment.getId(), invalidComment));
     }
 
     @Test
-    public void test_UpdateComment_FailureCommentNotFound() {
+    void test_UpdateComment_FailureCommentNotFound() {
         // given
         Comment updatedComment = TestDataBuilder.exampleComment2().comment();
         Long invalidId = -1L;
@@ -183,7 +183,7 @@ public class CommentServiceTests {
     }
 
     @Test
-    public void test_DeleteComment_Success() {
+    void test_DeleteComment_Success() {
         // given
         Comment comment = TestDataBuilder.exampleComment().comment();
 
