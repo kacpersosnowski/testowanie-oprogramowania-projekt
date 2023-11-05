@@ -3,6 +3,7 @@ package com.testowanieoprogramowaniaprojekt.services;
 import com.testowanieoprogramowaniaprojekt.entities.Comment;
 import com.testowanieoprogramowaniaprojekt.entities.Post;
 import com.testowanieoprogramowaniaprojekt.entities.User;
+import com.testowanieoprogramowaniaprojekt.exceptions.BadRequestException;
 import com.testowanieoprogramowaniaprojekt.repositories.CommentRepository;
 import com.testowanieoprogramowaniaprojekt.repositories.PostRepository;
 import com.testowanieoprogramowaniaprojekt.repositories.UserRepository;
@@ -30,6 +31,8 @@ public class CommentService {
     }
 
     public Comment save(Comment commentRequest) {
+        validateComment(commentRequest);
+
         User author = userRepository.findById(commentRequest.getAuthor().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         Post post = postRepository.findById(commentRequest.getPost().getId())
@@ -41,6 +44,8 @@ public class CommentService {
     }
 
     public Comment update(Long id, Comment comment) {
+        validateComment(comment);
+
         return commentRepository.findById(id)
             .map(foundComment -> {
                 foundComment.setContent(comment.getContent());
@@ -51,5 +56,15 @@ public class CommentService {
 
     public void deleteById(Long id) {
         commentRepository.deleteById(id);
+    }
+
+    private void validateComment(Comment comment) {
+        if(comment.getContent() == null || comment.getContent().trim().isEmpty()) {
+            throw new BadRequestException("Comment content is mandatory.");
+        } else if(comment.getAuthor() == null) {
+            throw new BadRequestException("Comment author is mandatory.");
+        } else if(comment.getPost() == null) {
+            throw new BadRequestException("Comment post is mandatory.");
+        }
     }
 }
