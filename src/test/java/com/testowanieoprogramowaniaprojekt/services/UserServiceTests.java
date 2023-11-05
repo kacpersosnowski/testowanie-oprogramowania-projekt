@@ -11,8 +11,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 class UserServiceTests {
 
     @Mock
