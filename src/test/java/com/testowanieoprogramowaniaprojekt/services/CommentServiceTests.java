@@ -7,13 +7,14 @@ import com.testowanieoprogramowaniaprojekt.repositories.PostRepository;
 import com.testowanieoprogramowaniaprojekt.repositories.UserRepository;
 import com.testowanieoprogramowaniaprojekt.testData.TestDataBuilder;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.mockito.Mockito.times;
@@ -27,7 +28,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = {CommentRepository.class, UserRepository.class, PostRepository.class})
+@ExtendWith(SpringExtension.class)
 class CommentServiceTests {
 
     @Mock
