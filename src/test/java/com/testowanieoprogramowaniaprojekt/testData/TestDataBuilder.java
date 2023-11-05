@@ -22,11 +22,44 @@ public class TestDataBuilder {
         return new ExampleUser(author);
     }
 
+    public static ExampleUser exampleUser2() {
+        User author = User
+                .builder()
+                .id(1L)
+                .username("ala")
+                .password("kot")
+                .build();
+
+        return new ExampleUser(author);
+    }
+
+    public static ExampleUser exampleUser3() {
+        User author = User
+                .builder()
+                .id(2L)
+                .username("user")
+                .password("user")
+                .build();
+
+        return new ExampleUser(author);
+    }
+
     public static ExampleSubreddit exampleSubreddit() {
         Subreddit subreddit = Subreddit
                 .builder()
-                .id(1L)
+                .id(3L)
                 .name("subreddit")
+                .user(TestDataBuilder.exampleUser().user())
+                .build();
+
+        return new ExampleSubreddit(subreddit);
+    }
+
+    public static ExampleSubreddit exampleSubreddit2() {
+        Subreddit subreddit = Subreddit
+                .builder()
+                .id(2L)
+                .name("subreddit2")
                 .user(TestDataBuilder.exampleUser().user())
                 .build();
 
@@ -41,6 +74,30 @@ public class TestDataBuilder {
                 .description("postDescription")
                 .author(TestDataBuilder.exampleUser().user())
                 .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .build();
+
+        return new ExamplePost(post);
+    }
+
+    public static ExamplePost examplePost2() {
+        Post post = Post.builder()
+                .id(2L)
+                .title("post title 2")
+                .description("post description")
+                .author(TestDataBuilder.exampleUser().user())
+                .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .build();
+
+        return new ExamplePost(post);
+    }
+
+    public static ExamplePost examplePost3() {
+        Post post = Post.builder()
+                .id(3L)
+                .title("post title 3")
+                .description("post description #3")
+                .author(TestDataBuilder.exampleUser2().user())
+                .subreddit(TestDataBuilder.exampleSubreddit2().subreddit())
                 .build();
 
         return new ExamplePost(post);
