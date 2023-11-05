@@ -62,7 +62,7 @@ class PostServiceTests {
     }
 
     @Test
-    void test_findById_shouldReturnError() {
+    void test_findById_shouldThrowResponseStatusException() {
         // given
         Long searchedPostId = 2L;
 
