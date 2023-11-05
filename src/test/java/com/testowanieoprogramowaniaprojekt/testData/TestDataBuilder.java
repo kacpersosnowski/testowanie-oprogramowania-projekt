@@ -33,6 +33,46 @@ public class TestDataBuilder {
         return new ExampleSubreddit(subreddit);
     }
 
+    public static ExampleSubreddit exampleSubreddit2() {
+        Subreddit subreddit = Subreddit
+                .builder()
+                .id(1L)
+                .name("subreddit 1")
+                .user(TestDataBuilder.exampleUser().user())
+                .build();
+
+        return new ExampleSubreddit(subreddit);
+    }
+
+    public static ExampleSubreddit exampleSubreddit3() {
+        Subreddit subreddit = Subreddit
+                .builder()
+                .id(1L)
+                .name("subreddit 2")
+                .user(TestDataBuilder.exampleUser().user())
+                .build();
+
+        return new ExampleSubreddit(subreddit);
+    }
+
+    public static InvalidSubredditsList invalidSubredditsList() {
+        Subreddit subreddit1 = Subreddit
+                .builder()
+                .id(1L)
+                .name(null)
+                .user(TestDataBuilder.exampleUser().user())
+                .build();
+
+        Subreddit subreddit2 = Subreddit
+                .builder()
+                .id(1L)
+                .name("subreddit")
+                .user(null)
+                .build();
+
+        return new InvalidSubredditsList(Stream.of(subreddit1, subreddit2));
+    }
+
     public static ExamplePost examplePost() {
         Post post = Post
                 .builder()
