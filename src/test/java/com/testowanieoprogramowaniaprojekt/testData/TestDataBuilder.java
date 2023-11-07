@@ -33,17 +33,6 @@ public class TestDataBuilder {
         return new ExampleUser(author);
     }
 
-    public static ExampleUser exampleUser3() {
-        User author = User
-                .builder()
-                .id(2L)
-                .username("user")
-                .password("user")
-                .build();
-
-        return new ExampleUser(author);
-    }
-
     public static ExampleSubreddit exampleSubreddit() {
         Subreddit subreddit = Subreddit
                 .builder()
