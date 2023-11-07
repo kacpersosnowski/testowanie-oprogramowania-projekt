@@ -41,10 +41,6 @@ public class PostService {
     }
 
     public Post findById(Long id) {
-        if(id < 0) {
-            throw new BadRequestException("Post Id can't be less than 0.");
-        }
-
         return postRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found."));
     }
@@ -66,13 +62,15 @@ public class PostService {
     }
 
     private void validate(Post post) {
-        if(post.getTitle() == null || post.getTitle().trim().isEmpty()) {
+        if(post == null) {
+            throw new BadRequestException("Post must not be null.");
+        } else if(post.getTitle() == null || post.getTitle().trim().isEmpty()) {
             throw new BadRequestException("Post title is mandatory.");
         } else if(post.getDescription() == null || post.getDescription().trim().isEmpty()) {
             throw new BadRequestException("Post description is mandatory.");
-        } else if (post.getAuthor() == null) {
+        } else if(post.getAuthor() == null) {
             throw new BadRequestException("Post author is mandatory.");
-        } else if (post.getSubreddit() == null) {
+        } else if(post.getSubreddit() == null) {
             throw new BadRequestException("Post subreddit is mandatory.");
         }
     }

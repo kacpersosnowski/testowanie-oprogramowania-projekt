@@ -139,6 +139,64 @@ public class TestDataBuilder {
         return new ExampleComment(comment);
     }
 
+    public static InvalidPostList invalidPostList() {
+        Post post1 = Post.builder()
+                .id(1L)
+                .title(null)
+                .description("test")
+                .author(TestDataBuilder.exampleUser().user())
+                .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .comments(null)
+                .build();
+
+        Post post2 = Post.builder()
+                .id(2L)
+                .title(" ")
+                .description("test")
+                .author(TestDataBuilder.exampleUser().user())
+                .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .comments(null)
+                .build();
+
+        Post post3 = Post.builder()
+                .id(3L)
+                .title("title")
+                .description("")
+                .author(TestDataBuilder.exampleUser().user())
+                .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .comments(null)
+                .build();
+
+        Post post4 = Post.builder()
+                .id(4L)
+                .title("title")
+                .description(null)
+                .author(TestDataBuilder.exampleUser().user())
+                .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .comments(null)
+                .build();
+
+        Post post5 = Post.builder()
+                .id(1L)
+                .title("title")
+                .description("test")
+                .author(null)
+                .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .comments(null)
+                .build();
+
+        Post post6 = Post.builder()
+                .id(1L)
+                .title("title")
+                .description("test")
+                .author(TestDataBuilder.exampleUser().user())
+                .subreddit(null)
+                .comments(null)
+                .build();
+
+        return new InvalidPostList(Stream.of(post1, post2, post3, post4, post5, post6, null));
+    }
+
     public static InvalidCommentsList invalidCommentsList() {
         Comment comment = Comment
                 .builder()
