@@ -38,10 +38,6 @@ public class Comment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
 
-//    @OneToMany
-//    @JsonIgnore
-//    private Set<Vote> votes;
-
     public Comment() {
         this.creationDate = new Date();
     }
