@@ -1,9 +1,7 @@
 package com.testowanieoprogramowaniaprojekt.controllers;
 
 import com.testowanieoprogramowaniaprojekt.entities.Vote;
-import com.testowanieoprogramowaniaprojekt.exceptions.BadRequestException;
 import com.testowanieoprogramowaniaprojekt.services.VoteService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -27,12 +25,12 @@ public class VoteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    Vote create(@Valid @RequestBody Vote vote) {
+    Vote create(@RequestBody Vote vote) {
         return voteService.save(vote);
     }
     
     @PutMapping("/{id}")
-    Vote update(@PathVariable Long id, @Valid @RequestBody Vote vote) {
+    Vote update(@PathVariable Long id, @RequestBody Vote vote) {
         return voteService.update(id, vote);
     }
 
