@@ -54,6 +54,7 @@ public class TestDataBuilder {
         invalidUserList.get(0).setUsername(null);
         invalidUserList.get(1).setPassword(null);
         return new InvalidUserList(invalidUserList);
+    }
 
     public static ExampleSubreddit exampleSubreddit() {
         Subreddit subreddit = Subreddit
