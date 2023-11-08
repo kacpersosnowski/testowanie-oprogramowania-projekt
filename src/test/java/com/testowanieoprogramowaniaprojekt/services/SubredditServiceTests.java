@@ -27,7 +27,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class SubredditServiceTests {
+class SubredditServiceTests {
 
     @Mock
     private UserRepository userRepository;
@@ -39,7 +39,7 @@ public class SubredditServiceTests {
     private SubredditService subredditService;
 
     @Test
-    public void test_GetAllSubreddits_Success() {
+    void test_GetAllSubreddits_Success() {
         // given
         List<Subreddit> subreddits = new ArrayList<>(Arrays.asList(
                 TestDataBuilder.exampleSubreddit().subreddit(),
@@ -55,7 +55,7 @@ public class SubredditServiceTests {
     }
 
     @Test
-    public void test_GetSubredditById_Success() {
+    void test_GetSubredditById_Success() {
         // given
         Subreddit subreddit = TestDataBuilder.exampleSubreddit().subreddit();
         Long subredditId = 1L;
@@ -70,7 +70,7 @@ public class SubredditServiceTests {
     }
 
     @Test
-    public void test_GetSubredditById_Failure() {
+    void test_GetSubredditById_Failure() {
         // given
         Long subredditId = -1L;
 
@@ -83,7 +83,7 @@ public class SubredditServiceTests {
     }
 
     @Test
-    public void test_CreateSubreddit_Success() {
+    void test_CreateSubreddit_Success() {
         // given
         Subreddit subredditToBeCreated = TestDataBuilder.exampleSubreddit().subreddit();
         // when
@@ -99,16 +99,16 @@ public class SubredditServiceTests {
 
     @ParameterizedTest
     @MethodSource("provideInvalidSubreddits")
-    public void test_CreateSubreddit_FailureInvalidRequestData(Subreddit invalidSubreddit) {
+    void test_CreateSubreddit_FailureInvalidRequestData(Subreddit invalidSubreddit) {
         assertThrows(BadRequestException.class, () -> subredditService.createSubreddit(invalidSubreddit));
     }
 
-    private static Stream<Subreddit> provideInvalidSubreddits() {
+    static Stream<Subreddit> provideInvalidSubreddits() {
         return TestDataBuilder.invalidSubredditsList().invalidSubreddits();
     }
 
     @Test
-    public void test_CreateSubreddit_FailureUserNotFound() {
+    void test_CreateSubreddit_FailureUserNotFound() {
         // given
         Subreddit subredditToBeCreated = TestDataBuilder.exampleSubreddit().subreddit();
 
@@ -121,7 +121,7 @@ public class SubredditServiceTests {
     }
 
     @Test
-    public void test_UpdateSubreddit_Success() {
+    void test_UpdateSubreddit_Success() {
         // given
         Subreddit existingSubreddit = TestDataBuilder.exampleSubreddit().subreddit();
         Subreddit updatedSubreddit = TestDataBuilder.exampleSubreddit2().subreddit();
@@ -141,14 +141,14 @@ public class SubredditServiceTests {
 
     @ParameterizedTest
     @MethodSource("provideInvalidSubreddits")
-    public void test_UpdateSubreddit_FailureInvalidRequestData(Subreddit invalidSubreddit) {
+    void test_UpdateSubreddit_FailureInvalidRequestData(Subreddit invalidSubreddit) {
         Subreddit existingSubreddit = TestDataBuilder.exampleSubreddit().subreddit();
 
         assertThrows(BadRequestException.class, () -> subredditService.updateSubreddit(existingSubreddit.getId(), invalidSubreddit));
     }
 
     @Test
-    public void test_UpdateSubreddit_FailureSubredditNotFound() {
+    void test_UpdateSubreddit_FailureSubredditNotFound() {
         // given
         Subreddit updatedSubreddit = TestDataBuilder.exampleSubreddit2().subreddit();
         Long invalidId = -1L;
@@ -162,7 +162,7 @@ public class SubredditServiceTests {
     }
 
     @Test
-    public void test_DeleteSubreddit_Success() {
+    void test_DeleteSubreddit_Success() {
         // given
         Subreddit subreddit = TestDataBuilder.exampleSubreddit().subreddit();
 
