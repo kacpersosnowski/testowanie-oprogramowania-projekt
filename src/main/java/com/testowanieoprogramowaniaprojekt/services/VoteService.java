@@ -68,23 +68,6 @@ public class VoteService {
         voteRepository.deleteById(id);
     }
 
-
-
-    public int getVotesForPost(Long id) {
-        List<Vote> votes = voteRepository.findAll()
-                .stream()
-                .filter(vote -> vote.getPost() != null && Objects.equals(vote.getPost().getId(), id)).toList();
-        int result = 0;
-        for (Vote vote: votes) {
-            if (vote.getVoteType() == VoteType.POSITIVE) {
-                result ++;
-            } else {
-                result--;
-            }
-        }
-        return result;
-    }
-
     private int validateVote(Vote vote) {
         if (vote.getVoteType() == null || vote.getUser() == null) {
             throw new BadRequestException("Vote type is mandatory.");
