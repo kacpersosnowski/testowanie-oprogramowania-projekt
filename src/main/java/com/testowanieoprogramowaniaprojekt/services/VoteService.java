@@ -70,7 +70,7 @@ public class VoteService {
     }
 
     private int validateVote(Vote vote) {
-        if (vote.getVoteType() == null || vote.getUser() == null) {
+        if (vote.getVoteType() == null) {
             throw new BadRequestException("Vote type is mandatory.");
         }
         if (vote.getUser() == null) {
@@ -80,11 +80,9 @@ public class VoteService {
             throw new BadRequestException("Comment or post is mandatory.");
         } else if(vote.getComment() != null && vote.getPost() != null) {
             throw new BadRequestException("Only either post or comment is possible.");
-        } else if(vote.getComment() != null && vote.getPost() == null) {
-            return 0; //PostVote
-        } else if(vote.getComment() == null && vote.getPost() != null) {
-            return 1; //CommentVote
+        } else {
+            // 0 for CommentVote, 1 for PostVote
+            return vote.getComment() != null ? 0 : 1;
+        }
     }
-    return -1;
-}
 }

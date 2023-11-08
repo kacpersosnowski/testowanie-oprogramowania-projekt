@@ -1,10 +1,12 @@
 package com.testowanieoprogramowaniaprojekt.controllers;
 
 import com.testowanieoprogramowaniaprojekt.entities.Vote;
+import com.testowanieoprogramowaniaprojekt.exceptions.BadRequestException;
 import com.testowanieoprogramowaniaprojekt.services.VoteService;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class VoteController {
     private final VoteService voteService;
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<String> handleException(BadRequestException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 
     @GetMapping
     List<Vote> findAll() {
@@ -38,6 +45,4 @@ public class VoteController {
     void delete(@PathVariable Long id) {
         voteService.deleteVote(id);
     }
-
-
 }
