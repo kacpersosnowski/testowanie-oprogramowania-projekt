@@ -87,4 +87,16 @@ public class PostController {
     ) {
         postService.deleteById(id);
     }
+
+    @Operation(
+            summary = "Get votes for post",
+            description = "Get votes for post by specifying their id."
+    )
+    @GetMapping("/{id}/votes")
+    int getVotes(
+            @Parameter(description = "Vote id.", example = "1")
+            @PathVariable Long id
+    ) {
+        return postService.getVotes(id);
+    }
 }

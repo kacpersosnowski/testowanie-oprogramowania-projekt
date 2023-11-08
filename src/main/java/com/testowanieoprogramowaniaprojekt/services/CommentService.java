@@ -1,18 +1,18 @@
 package com.testowanieoprogramowaniaprojekt.services;
 
-import com.testowanieoprogramowaniaprojekt.entities.Comment;
-import com.testowanieoprogramowaniaprojekt.entities.Post;
-import com.testowanieoprogramowaniaprojekt.entities.User;
+import com.testowanieoprogramowaniaprojekt.entities.*;
 import com.testowanieoprogramowaniaprojekt.exceptions.BadRequestException;
 import com.testowanieoprogramowaniaprojekt.repositories.CommentRepository;
 import com.testowanieoprogramowaniaprojekt.repositories.PostRepository;
 import com.testowanieoprogramowaniaprojekt.repositories.UserRepository;
+import com.testowanieoprogramowaniaprojekt.repositories.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +20,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final VoteRepository voteRepository;
 
     public List<Comment> findAll() {
         return commentRepository.findAll();
@@ -56,6 +57,21 @@ public class CommentService {
 
     public void deleteById(Long id) {
         commentRepository.deleteById(id);
+    }
+
+    public int getVotes(Long id) {
+        List<Vote> votes = voteRepository.findAll()
+                .stream()
+                .filter(vote -> vote.getComment() != null && Objects.equals(vote.getComment().getId(), id)).toList();
+        int result = 0;
+        for (Vote vote: votes) {
+            if (vote.getVoteType() == VoteType.POSITIVE) {
+                result ++;
+            } else {
+                result--;
+            }
+        }
+        return result;
     }
 
     private void validateComment(Comment comment) {

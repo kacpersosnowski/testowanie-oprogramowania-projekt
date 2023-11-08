@@ -94,4 +94,16 @@ public class CommentController {
         commentService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @Operation(
+            summary = "Get votes for comment",
+            description = "Get votes for comment by specifying their id."
+    )
+    @GetMapping("/{id}/votes")
+    int getVotes(
+            @Parameter(description = "Vote id.", example = "1")
+            @PathVariable Long id
+    ) {
+        return commentService.getVotes(id);
+    }
 }
