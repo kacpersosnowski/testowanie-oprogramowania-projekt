@@ -1,18 +1,18 @@
 package com.testowanieoprogramowaniaprojekt.services;
 
-import com.testowanieoprogramowaniaprojekt.entities.Post;
-import com.testowanieoprogramowaniaprojekt.entities.Subreddit;
-import com.testowanieoprogramowaniaprojekt.entities.User;
+import com.testowanieoprogramowaniaprojekt.entities.*;
 import com.testowanieoprogramowaniaprojekt.exceptions.BadRequestException;
 import com.testowanieoprogramowaniaprojekt.repositories.PostRepository;
 import com.testowanieoprogramowaniaprojekt.repositories.SubredditRepository;
 import com.testowanieoprogramowaniaprojekt.repositories.UserRepository;
+import com.testowanieoprogramowaniaprojekt.repositories.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +21,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final SubredditRepository subredditRepository;
+    private final VoteRepository voteRepository;
 
     public List<Post> findAll() {
         return postRepository.findAll();
@@ -59,6 +60,21 @@ public class PostService {
 
     public void deleteById(Long id) {
         postRepository.deleteById(id);
+    }
+
+    public int getVotes(Long id) {
+        List<Vote> votes = voteRepository.findAll()
+                .stream()
+                .filter(vote -> vote.getPost() != null && Objects.equals(vote.getPost().getId(), id)).toList();
+        int result = 0;
+        for (Vote vote: votes) {
+            if (vote.getVoteType() == VoteType.POSITIVE) {
+                result ++;
+            } else {
+                result--;
+            }
+        }
+        return result;
     }
 
     private void validate(Post post) {

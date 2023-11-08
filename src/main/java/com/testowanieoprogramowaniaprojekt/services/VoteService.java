@@ -1,9 +1,6 @@
 package com.testowanieoprogramowaniaprojekt.services;
 
-import com.testowanieoprogramowaniaprojekt.entities.Comment;
-import com.testowanieoprogramowaniaprojekt.entities.Post;
-import com.testowanieoprogramowaniaprojekt.entities.User;
-import com.testowanieoprogramowaniaprojekt.entities.Vote;
+import com.testowanieoprogramowaniaprojekt.entities.*;
 import com.testowanieoprogramowaniaprojekt.exceptions.BadRequestException;
 import com.testowanieoprogramowaniaprojekt.repositories.CommentRepository;
 import com.testowanieoprogramowaniaprojekt.repositories.PostRepository;
@@ -13,6 +10,8 @@ import com.testowanieoprogramowaniaprojekt.repositories.VoteRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -67,6 +66,23 @@ public class VoteService {
 
     public void deleteVote(Long id) {
         voteRepository.deleteById(id);
+    }
+
+
+
+    public int getVotesForPost(Long id) {
+        List<Vote> votes = voteRepository.findAll()
+                .stream()
+                .filter(vote -> vote.getPost() != null && Objects.equals(vote.getPost().getId(), id)).toList();
+        int result = 0;
+        for (Vote vote: votes) {
+            if (vote.getVoteType() == VoteType.POSITIVE) {
+                result ++;
+            } else {
+                result--;
+            }
+        }
+        return result;
     }
 
     private int validateVote(Vote vote) {
