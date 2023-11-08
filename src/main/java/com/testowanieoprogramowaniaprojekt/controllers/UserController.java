@@ -9,11 +9,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -45,7 +45,6 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<User> create(@RequestBody User user) {
-        validateUser(user);
         return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
     }
 
@@ -81,7 +80,6 @@ public class UserController {
             @PathVariable Long id,
             @RequestBody User user
     ) {
-        validateUser(user);
         return new ResponseEntity<>(userService.update(id, user), HttpStatus.OK);
     }
 
@@ -96,13 +94,5 @@ public class UserController {
     ) {
         userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    private void validateUser(User user) {
-        if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
-            throw new BadRequestException("Username is mandatory.");
-        } else if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
-            throw new BadRequestException("Password is mandatory.");
-        }
     }
 }
