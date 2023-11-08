@@ -4,6 +4,8 @@ import com.testowanieoprogramowaniaprojekt.entities.Comment;
 import com.testowanieoprogramowaniaprojekt.entities.Post;
 import com.testowanieoprogramowaniaprojekt.entities.Subreddit;
 import com.testowanieoprogramowaniaprojekt.entities.User;
+import com.testowanieoprogramowaniaprojekt.entities.Vote;
+import com.testowanieoprogramowaniaprojekt.entities.VoteType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -243,5 +245,67 @@ public class TestDataBuilder {
                 .build();
 
         return new InvalidCommentsList(Stream.of(comment, comment2, comment3, comment4));
+    }
+
+    public static ExampleVote examplePostVote() {
+        Vote vote = Vote
+                .builder()
+                .id(1L)
+                .voteType(VoteType.POSITIVE)
+                .post(TestDataBuilder.examplePost().post())
+                .user(TestDataBuilder.exampleUser().user())
+                .build();
+
+        return new ExampleVote(vote);
+    } 
+    public static ExampleVote exampleCommentVote() {
+        Vote vote = Vote
+                .builder()
+                .id(2L)
+                .voteType(VoteType.NEGATIVE)
+                .comment(TestDataBuilder.exampleComment().comment())
+                .user(TestDataBuilder.exampleUser().user())
+                .build();
+
+        return new ExampleVote(vote);
+    } 
+
+    public static InvalidVoteList invalidVoteList() {
+        Vote vote1 = Vote
+                .builder()
+                .id(3L)
+                .voteType(null)
+                .comment(TestDataBuilder.exampleComment().comment())
+                .user(TestDataBuilder.exampleUser().user())
+                .build();
+
+        Vote vote2 = Vote
+                .builder()
+                .id(3L)
+                .voteType(VoteType.NEGATIVE)
+                .comment(TestDataBuilder.exampleComment().comment())
+                .post(TestDataBuilder.examplePost().post())
+                .user(TestDataBuilder.exampleUser().user())
+                .build();
+        
+        Vote vote3 = Vote
+                .builder()
+                .id(3L)
+                .voteType(VoteType.NEGATIVE)
+                .comment(null)
+                .post(null)
+                .user(TestDataBuilder.exampleUser().user())
+                .build();
+        
+        Vote vote4 = Vote
+                .builder()
+                .id(3L)
+                .voteType(VoteType.NEGATIVE)
+                .comment(TestDataBuilder.exampleComment().comment())
+                .user(null)
+                .build();
+        
+
+        return new InvalidVoteList(Stream.of(vote1, vote2, vote3, vote4));
     }
 }

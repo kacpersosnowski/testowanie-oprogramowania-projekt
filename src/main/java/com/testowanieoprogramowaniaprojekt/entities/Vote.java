@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Builder;
 
 @Entity
 @Getter
 @Setter
+@Builder
 public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,7 +21,7 @@ public class Vote {
     private Post post;
 
     @ManyToOne
-    @NotEmpty(message = "Comment is mandatory.")
+    //@NotEmpty(message = "Comment is mandatory.")
     @JoinColumn(name = "comment_id", nullable = true)
     private Comment comment;
 
