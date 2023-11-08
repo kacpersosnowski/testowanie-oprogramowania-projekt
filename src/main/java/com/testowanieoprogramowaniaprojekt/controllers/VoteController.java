@@ -1,6 +1,7 @@
 package com.testowanieoprogramowaniaprojekt.controllers;
 
 import com.testowanieoprogramowaniaprojekt.entities.Vote;
+import com.testowanieoprogramowaniaprojekt.exceptions.BadRequestException;
 import com.testowanieoprogramowaniaprojekt.services.VoteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +23,11 @@ import java.util.List;
 public class VoteController {
     private final VoteService voteService;
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<String> handleException(BadRequestException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  
     @Operation(
             summary = "Find all Votes",
             description = "Get all Votes."

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -36,10 +37,6 @@ public class Comment {
     @JoinColumn(name = "post_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
-
-//    @OneToMany
-//    @JsonIgnore
-//    private Set<Vote> votes;
 
     public Comment() {
         this.creationDate = new Date();

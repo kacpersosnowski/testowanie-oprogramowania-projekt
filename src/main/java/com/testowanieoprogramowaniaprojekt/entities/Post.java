@@ -31,11 +31,6 @@ public class Post {
     @JsonIgnore
     private Set<Comment> comments;
 
-    /*TODO: add this after votes are added
-    @OneToMany
-    private Set<Votes> votes;
-    */
-
     @NotEmpty(message = "Title is mandatory.")
     private String title;
 

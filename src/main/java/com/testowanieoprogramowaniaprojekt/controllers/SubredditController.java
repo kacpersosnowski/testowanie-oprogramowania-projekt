@@ -1,6 +1,7 @@
 package com.testowanieoprogramowaniaprojekt.controllers;
 
 import com.testowanieoprogramowaniaprojekt.entities.Subreddit;
+import com.testowanieoprogramowaniaprojekt.exceptions.BadRequestException;
 import com.testowanieoprogramowaniaprojekt.services.SubredditService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -21,13 +23,18 @@ import java.util.List;
 public class SubredditController {
     private final SubredditService subredditService;
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<String> handleException(BadRequestException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @Operation(
             summary = "Post a Subreddit",
             description = "Post a Subreddit to database."
     )
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Subreddit createSubreddit(@Valid @RequestBody Subreddit subreddit) {
+    public Subreddit createSubreddit(@RequestBody Subreddit subreddit) {
         return subredditService.createSubreddit(subreddit);
     }
 
