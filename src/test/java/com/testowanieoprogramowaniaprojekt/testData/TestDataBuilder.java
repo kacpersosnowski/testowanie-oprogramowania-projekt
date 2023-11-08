@@ -23,6 +23,17 @@ public class TestDataBuilder {
 
         return new ExampleUser(author);
     }
+  
+    public static ExampleUser exampleUser2() {
+          User author = User
+                  .builder()
+                  .id(1L)
+                  .username("ala")
+                  .password("kot")
+                  .build();
+
+          return new ExampleUser(author);
+      }
 
     public static ExampleUserList exampleUserList(int size) {
         List<User> userList = new ArrayList<>();
@@ -43,13 +54,23 @@ public class TestDataBuilder {
         invalidUserList.get(0).setUsername(null);
         invalidUserList.get(1).setPassword(null);
         return new InvalidUserList(invalidUserList);
-    }
 
     public static ExampleSubreddit exampleSubreddit() {
         Subreddit subreddit = Subreddit
                 .builder()
-                .id(1L)
+                .id(3L)
                 .name("subreddit")
+                .user(TestDataBuilder.exampleUser().user())
+                .build();
+
+        return new ExampleSubreddit(subreddit);
+    }
+
+    public static ExampleSubreddit exampleSubreddit2() {
+        Subreddit subreddit = Subreddit
+                .builder()
+                .id(2L)
+                .name("subreddit2")
                 .user(TestDataBuilder.exampleUser().user())
                 .build();
 
@@ -64,6 +85,30 @@ public class TestDataBuilder {
                 .description("postDescription")
                 .author(TestDataBuilder.exampleUser().user())
                 .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .build();
+
+        return new ExamplePost(post);
+    }
+
+    public static ExamplePost examplePost2() {
+        Post post = Post.builder()
+                .id(2L)
+                .title("post title 2")
+                .description("post description")
+                .author(TestDataBuilder.exampleUser().user())
+                .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .build();
+
+        return new ExamplePost(post);
+    }
+
+    public static ExamplePost examplePost3() {
+        Post post = Post.builder()
+                .id(3L)
+                .title("post title 3")
+                .description("post description #3")
+                .author(TestDataBuilder.exampleUser2().user())
+                .subreddit(TestDataBuilder.exampleSubreddit2().subreddit())
                 .build();
 
         return new ExamplePost(post);
@@ -103,6 +148,64 @@ public class TestDataBuilder {
                 .build();
 
         return new ExampleComment(comment);
+    }
+
+    public static InvalidPostList invalidPostList() {
+        Post post1 = Post.builder()
+                .id(1L)
+                .title(null)
+                .description("test")
+                .author(TestDataBuilder.exampleUser().user())
+                .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .comments(null)
+                .build();
+
+        Post post2 = Post.builder()
+                .id(2L)
+                .title(" ")
+                .description("test")
+                .author(TestDataBuilder.exampleUser().user())
+                .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .comments(null)
+                .build();
+
+        Post post3 = Post.builder()
+                .id(3L)
+                .title("title")
+                .description("")
+                .author(TestDataBuilder.exampleUser().user())
+                .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .comments(null)
+                .build();
+
+        Post post4 = Post.builder()
+                .id(4L)
+                .title("title")
+                .description(null)
+                .author(TestDataBuilder.exampleUser().user())
+                .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .comments(null)
+                .build();
+
+        Post post5 = Post.builder()
+                .id(1L)
+                .title("title")
+                .description("test")
+                .author(null)
+                .subreddit(TestDataBuilder.exampleSubreddit().subreddit())
+                .comments(null)
+                .build();
+
+        Post post6 = Post.builder()
+                .id(1L)
+                .title("title")
+                .description("test")
+                .author(TestDataBuilder.exampleUser().user())
+                .subreddit(null)
+                .comments(null)
+                .build();
+
+        return new InvalidPostList(Stream.of(post1, post2, post3, post4, post5, post6, null));
     }
 
     public static InvalidCommentsList invalidCommentsList() {
