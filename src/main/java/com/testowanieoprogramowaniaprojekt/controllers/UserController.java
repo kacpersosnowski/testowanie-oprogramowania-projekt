@@ -30,7 +30,6 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<User> create(@RequestBody User user) {
-        validateUser(user);
         return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
     }
 
@@ -41,7 +40,6 @@ public class UserController {
 
     @PutMapping("/{id}")
     ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
-        validateUser(user);
         return new ResponseEntity<>(userService.update(id, user), HttpStatus.OK);
     }
 
@@ -49,13 +47,5 @@ public class UserController {
     ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    private void validateUser(User user) {
-        if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
-            throw new BadRequestException("Username is mandatory.");
-        } else if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
-            throw new BadRequestException("Password is mandatory.");
-        }
     }
 }

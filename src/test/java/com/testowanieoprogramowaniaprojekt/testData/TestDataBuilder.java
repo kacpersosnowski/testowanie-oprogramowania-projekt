@@ -5,6 +5,8 @@ import com.testowanieoprogramowaniaprojekt.entities.Post;
 import com.testowanieoprogramowaniaprojekt.entities.Subreddit;
 import com.testowanieoprogramowaniaprojekt.entities.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class TestDataBuilder {
@@ -21,17 +23,37 @@ public class TestDataBuilder {
 
         return new ExampleUser(author);
     }
-
+  
     public static ExampleUser exampleUser2() {
-        User author = User
-                .builder()
-                .id(1L)
-                .username("ala")
-                .password("kot")
-                .build();
+          User author = User
+                  .builder()
+                  .id(1L)
+                  .username("ala")
+                  .password("kot")
+                  .build();
 
-        return new ExampleUser(author);
+          return new ExampleUser(author);
+      }
+
+    public static ExampleUserList exampleUserList(int size) {
+        List<User> userList = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            User user = User
+                    .builder()
+                    .id((long) i)
+                    .username("author")
+                    .password("pass")
+                    .build();
+            userList.add(user);
+        }
+        return new ExampleUserList(userList);
     }
+
+    public static InvalidUserList invalidUserList() {
+        List<User> invalidUserList = exampleUserList(2).userList();
+        invalidUserList.get(0).setUsername(null);
+        invalidUserList.get(1).setPassword(null);
+        return new InvalidUserList(invalidUserList);
 
     public static ExampleSubreddit exampleSubreddit() {
         Subreddit subreddit = Subreddit
