@@ -1,21 +1,20 @@
 package com.testowanieoprogramowaniaprojekt.services;
 
-import com.testowanieoprogramowaniaprojekt.entities.*;
+import com.testowanieoprogramowaniaprojekt.entities.Comment;
+import com.testowanieoprogramowaniaprojekt.entities.Post;
+import com.testowanieoprogramowaniaprojekt.entities.User;
+import com.testowanieoprogramowaniaprojekt.entities.Vote;
 import com.testowanieoprogramowaniaprojekt.exceptions.BadRequestException;
 import com.testowanieoprogramowaniaprojekt.repositories.CommentRepository;
 import com.testowanieoprogramowaniaprojekt.repositories.PostRepository;
 import com.testowanieoprogramowaniaprojekt.repositories.UserRepository;
 import com.testowanieoprogramowaniaprojekt.repositories.VoteRepository;
-
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
