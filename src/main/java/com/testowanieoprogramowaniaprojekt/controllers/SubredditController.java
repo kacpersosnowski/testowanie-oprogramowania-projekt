@@ -2,6 +2,7 @@ package com.testowanieoprogramowaniaprojekt.controllers;
 
 import com.testowanieoprogramowaniaprojekt.entities.Subreddit;
 import com.testowanieoprogramowaniaprojekt.services.SubredditService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -13,7 +14,7 @@ public class SubredditController {
     private final SubredditService subredditService;
 
     @PostMapping
-    public Subreddit createSubreddit(@RequestBody Subreddit subreddit) {
+    public Subreddit createSubreddit(@Valid @RequestBody Subreddit subreddit) {
         return subredditService.createSubreddit(subreddit);
     }
 
@@ -28,7 +29,7 @@ public class SubredditController {
     }
 
     @PutMapping("/{id}")
-    public Subreddit updateSubreddit(@PathVariable Long id, @RequestBody Subreddit updatedSubreddit) {
+    public Subreddit updateSubreddit(@PathVariable Long id, @Valid @RequestBody Subreddit updatedSubreddit) {
         return subredditService.updateSubreddit(id, updatedSubreddit);
     }
 

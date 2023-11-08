@@ -33,21 +33,11 @@ public class CommentController {
 
     @PostMapping()
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
-        if(comment.getContent() == null || comment.getContent().trim().isEmpty()) {
-            throw new BadRequestException("Comment content is mandatory.");
-        } else if(comment.getAuthor() == null) {
-            throw new BadRequestException("Comment author is mandatory.");
-        }
         return new ResponseEntity<>(commentService.save(comment), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Comment> updateComment(@PathVariable("id") long id, @RequestBody Comment comment) {
-        if(comment.getContent() == null || comment.getContent().trim().isEmpty()) {
-            throw new BadRequestException("Comment content is mandatory.");
-        } else if(comment.getAuthor() == null) {
-            throw new BadRequestException("Comment author is mandatory.");
-        }
         return new ResponseEntity<>(commentService.update(id, comment), HttpStatus.OK);
     }
 

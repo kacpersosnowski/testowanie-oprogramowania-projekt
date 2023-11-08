@@ -1,11 +1,14 @@
 package com.testowanieoprogramowaniaprojekt.services;
 
 import com.testowanieoprogramowaniaprojekt.entities.User;
+import com.testowanieoprogramowaniaprojekt.exceptions.BadRequestException;
 import com.testowanieoprogramowaniaprojekt.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @Service
@@ -19,6 +22,8 @@ public class UserService {
     }
 
     public User save(User user) {
+        validateUser(user);
+        user.setPassword(hashPassword(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -28,6 +33,8 @@ public class UserService {
     }
 
     public User update(Long id, User user) {
+        validateUser(user);
+        user.setPassword(hashPassword(user.getPassword()));
         return userRepository.findById(id)
                 .map(currentUser -> {
                     currentUser.setUsername(user.getUsername());
@@ -39,5 +46,17 @@ public class UserService {
 
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    private void validateUser(User user) {
+        if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+            throw new BadRequestException("Username is mandatory.");
+        } else if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+            throw new BadRequestException("Password is mandatory.");
+        }
+    }
+
+    private String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt(10));
     }
 }

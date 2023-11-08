@@ -2,6 +2,8 @@ package com.testowanieoprogramowaniaprojekt.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -9,6 +11,8 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "comments")
 public class Comment {
@@ -28,11 +32,14 @@ public class Comment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User author;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "post_id", nullable = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "post_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Post post;
+
+//    @OneToMany
 //    @JsonIgnore
-//    private Post post;
+//    private Set<Vote> votes;
 
     public Comment() {
         this.creationDate = new Date();

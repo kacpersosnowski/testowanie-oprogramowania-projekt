@@ -1,33 +1,37 @@
 package com.testowanieoprogramowaniaprojekt.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name="posts")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @NotEmpty(message = "Author is mandatory.")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    @ManyToOne
-    @NotEmpty(message = "Subreddit is mandatory.")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "subreddit_id", nullable = false)
     private Subreddit subreddit;
 
-    /*TODO: add this after comments and votes are added
     @OneToMany
+    @JsonIgnore
     private Set<Comment> comments;
 
+    /*TODO: add this after votes are added
     @OneToMany
     private Set<Votes> votes;
     */
