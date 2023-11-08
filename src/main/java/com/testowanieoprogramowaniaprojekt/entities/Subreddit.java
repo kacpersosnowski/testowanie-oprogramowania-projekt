@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Date;
 
@@ -27,7 +26,7 @@ public class Subreddit {
     private Date creationDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public Subreddit() {
