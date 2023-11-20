@@ -1,10 +1,11 @@
 import React from "react";
 import {
+  RequestResult,
   TasksAction,
   TasksActionKind,
   TasksContextState,
 } from "./TasksContext.types";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Task } from "../models/Task";
 
 export const TasksContext = React.createContext<TasksContextState | null>(null);
@@ -38,13 +39,24 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
 }) => {
   const [tasks, dispatch] = React.useReducer(tasksReducer, []);
 
+  const handleError = (error: unknown): RequestResult => {
+    if (axios.isAxiosError(error)) {
+      return { isSuccess: false, error: error as AxiosError };
+    } else {
+      return {
+        isSuccess: false,
+        error: new AxiosError("Unknown error occurred"),
+      };
+    }
+  };
+
   const fetchData = async (url: string) => {
     try {
       const response = await axios.get<Task[]>(url);
       dispatch({ type: TasksActionKind.SET_TASKS, payload: response.data });
-      return true;
+      return { isSuccess: true, error: null };
     } catch (error) {
-      return false;
+      return handleError(error);
     }
   };
 
@@ -71,9 +83,9 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
   const getTaskDetails = async (id: number) => {
     try {
       const response = await axios.get<Task>(`/tasks/${id}`);
-      return response.data;
+      return { isSuccess: true, error: null, task: response.data };
     } catch (error) {
-      return null;
+      return handleError(error);
     }
   };
 
@@ -81,9 +93,9 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
     try {
       const response = await axios.post<Task>("/tasks", taskData);
       dispatch({ type: TasksActionKind.ADD_TASK, payload: response.data });
-      return true;
+      return { isSuccess: true, error: null };
     } catch (error) {
-      return false;
+      return handleError(error);
     }
   };
 
@@ -94,9 +106,9 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
         type: TasksActionKind.UPDATE_TASK,
         payload: { id, newTask: response.data },
       });
-      return true;
+      return { isSuccess: true, error: null };
     } catch (error) {
-      return false;
+      return handleError(error);
     }
   };
 
@@ -107,18 +119,18 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
         type: TasksActionKind.UPDATE_TASK,
         payload: { id, newTask: response.data },
       });
-      return true;
+      return { isSuccess: true, error: null };
     } catch (error) {
-      return false;
+      return handleError(error);
     }
   };
 
   const getTaskByTitle = async (titleData: Pick<Task, "title">) => {
     try {
       const response = await axios.post<Task>("/tasks/get-by-title", titleData);
-      return response.data;
+      return { isSuccess: true, error: null, task: response.data };
     } catch (error) {
-      return null;
+      return handleError(error);
     }
   };
 
@@ -126,9 +138,9 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
     try {
       await axios.delete(`/tasks/${id}`);
       dispatch({ type: TasksActionKind.DELETE_TASK, payload: id });
-      return true;
+      return { isSuccess: true, error: null };
     } catch (error) {
-      return false;
+      return handleError(error);
     }
   };
 

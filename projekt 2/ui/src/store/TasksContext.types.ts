@@ -1,18 +1,28 @@
+import { AxiosError } from "axios";
 import { Task } from "../models/Task";
 
 export type TasksContextState = {
   tasks: Task[];
-  getAllTasks: () => Promise<boolean>;
-  getTasksSortedByDate: () => Promise<boolean>;
-  getTasksSortedByPriority: () => Promise<boolean>;
-  getCompletedTasks: () => Promise<boolean>;
-  getUncompletedTasks: () => Promise<boolean>;
-  getTaskDetails: (id: number) => Promise<Task | null>;
-  createTask: (taskData: Omit<Task, "id">) => Promise<boolean>;
-  updateTask: (id: number, newTask: Task) => Promise<boolean>;
-  partialUpdateTask: (id: number, taskData: Partial<Task>) => Promise<boolean>;
-  getTaskByTitle: (titleData: Pick<Task, "title">) => Promise<Task | null>;
-  deleteTask: (id: number) => Promise<boolean>;
+  getAllTasks: () => Promise<RequestResult>;
+  getTasksSortedByDate: () => Promise<RequestResult>;
+  getTasksSortedByPriority: () => Promise<RequestResult>;
+  getCompletedTasks: () => Promise<RequestResult>;
+  getUncompletedTasks: () => Promise<RequestResult>;
+  getTaskDetails: (id: number) => Promise<RequestResult>;
+  createTask: (taskData: Omit<Task, "id">) => Promise<RequestResult>;
+  updateTask: (id: number, newTask: Task) => Promise<RequestResult>;
+  partialUpdateTask: (
+    id: number,
+    taskData: Partial<Task>
+  ) => Promise<RequestResult>;
+  getTaskByTitle: (titleData: Pick<Task, "title">) => Promise<RequestResult>;
+  deleteTask: (id: number) => Promise<RequestResult>;
+};
+
+export type RequestResult = {
+  isSuccess: boolean;
+  error: AxiosError | null;
+  task?: Task;
 };
 
 export enum TasksActionKind {
