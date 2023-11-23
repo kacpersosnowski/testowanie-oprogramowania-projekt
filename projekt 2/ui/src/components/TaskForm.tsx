@@ -7,7 +7,7 @@ type FormProps = {
   initialTask?: Task;
 };
 
-const TaskForm: React.FC<FormProps> = ({ onSubmit, initialTask }) => {
+export const TaskForm: React.FC<FormProps> = ({ onSubmit, initialTask }) => {
   const [task, setTask] = useState<Task | Omit<Task, 'id'>>({
     id: initialTask?.id,
     title: initialTask?.title || '',
@@ -138,5 +138,3 @@ const TaskForm: React.FC<FormProps> = ({ onSubmit, initialTask }) => {
     </form>
   );
 };
-
-export default TaskForm;

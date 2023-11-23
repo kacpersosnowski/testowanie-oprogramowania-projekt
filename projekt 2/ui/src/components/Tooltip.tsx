@@ -4,7 +4,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Tooltip = ({ id, tooltipText, children }: Props) => {
+export const Tooltip = ({ id, tooltipText, children }: Props) => {
   return (
     <>
       <button
@@ -26,5 +26,3 @@ const Tooltip = ({ id, tooltipText, children }: Props) => {
     </>
   );
 };
-
-export default Tooltip;
