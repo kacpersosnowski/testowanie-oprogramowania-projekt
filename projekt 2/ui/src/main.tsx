@@ -1,13 +1,32 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
-import "./index.css";
-import { TasksContextProvider } from "./store/TasksContext.tsx";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+import Layout from './components/Layout.tsx';
+import './index.css';
+import CreateTaskForm from './pages/CreateTaskForm.tsx';
+import Home from './pages/Home.tsx';
+import { TasksContextProvider } from './store/TasksContext.tsx';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      { path: '/', element: <Home /> },
+      { path: '/create', element: <CreateTaskForm /> },
+      {
+        path: '/edit/:id',
+        element: <CreateTaskForm />,
+      },
+    ],
+  },
+]);
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <TasksContextProvider>
-      <App />
+      <RouterProvider router={router} />
     </TasksContextProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

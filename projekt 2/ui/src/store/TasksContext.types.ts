@@ -1,5 +1,6 @@
-import { AxiosError } from "axios";
-import { Task } from "../models/Task";
+import { AxiosError } from 'axios';
+
+import { Task } from '../models/Task';
 
 export type TasksContextState = {
   tasks: Task[];
@@ -9,13 +10,13 @@ export type TasksContextState = {
   getCompletedTasks: () => Promise<RequestResult>;
   getUncompletedTasks: () => Promise<RequestResult>;
   getTaskDetails: (id: number) => Promise<RequestResult>;
-  createTask: (taskData: Omit<Task, "id">) => Promise<RequestResult>;
+  createTask: (taskData: Omit<Task, 'id'>) => Promise<RequestResult>;
   updateTask: (id: number, newTask: Task) => Promise<RequestResult>;
   partialUpdateTask: (
     id: number,
-    taskData: Partial<Task>
+    taskData: Partial<Task>,
   ) => Promise<RequestResult>;
-  getTaskByTitle: (titleData: Pick<Task, "title">) => Promise<RequestResult>;
+  getTaskByTitle: (titleData: Pick<Task, 'title'>) => Promise<RequestResult>;
   deleteTask: (id: number) => Promise<RequestResult>;
 };
 
@@ -26,10 +27,10 @@ export type RequestResult = {
 };
 
 export enum TasksActionKind {
-  SET_TASKS = "SET_TASKS",
-  ADD_TASK = "ADD_TASK",
-  UPDATE_TASK = "UPDATE_TASK",
-  DELETE_TASK = "DELETE_TASK",
+  SET_TASKS = 'SET_TASKS',
+  ADD_TASK = 'ADD_TASK',
+  UPDATE_TASK = 'UPDATE_TASK',
+  DELETE_TASK = 'DELETE_TASK',
 }
 
 export type TasksAction = {
