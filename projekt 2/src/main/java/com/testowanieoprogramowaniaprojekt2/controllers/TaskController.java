@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,6 +36,18 @@ public class TaskController {
         return taskService.getTaskById(id);
     }
 
+    @Operation(summary = "Get all tasks.")
+    @GetMapping
+    public List<Task> getAllTasks() {
+        return taskService.getAllTasks();
+    }
+
+    @Operation(summary = "Get all tasks chronologically.")
+    @GetMapping("/chronologically")
+    public List<Task> getAllTaskChronologically() {
+        return taskService.getAllTasksChronologically();
+    }
+
     @Operation(summary = "Get all completed tasks.")
     @GetMapping("/completed")
     List<Task> getCompleted() {
@@ -63,4 +72,31 @@ public class TaskController {
     List<Task> getFilteredByPriority(@PathVariable int priority) {
         return taskService.getByPriority(priority);
     }
+
+    @Operation(summary = "Create new task.")
+    @ApiResponse(
+            responseCode = "200",
+            content = {
+                    @Content(schema = @Schema(implementation = Task.class), mediaType = "application/json")})
+    @ApiResponse(
+            responseCode = "404",
+            content = {@Content(schema = @Schema())})
+    @PostMapping
+    public Task createTask(@RequestBody Task task) {
+        return taskService.createTask(task);
+    }
+
+    @Operation(summary = "Update existing task.")
+    @ApiResponse(
+            responseCode = "200",
+            content = {
+                    @Content(schema = @Schema(implementation = Task.class), mediaType = "application/json")})
+    @ApiResponse(
+            responseCode = "404",
+            content = {@Content(schema = @Schema())})
+    @PutMapping("/{id}")
+    public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
+        return taskService.updateTask(id, task);
+    }
+
 }
