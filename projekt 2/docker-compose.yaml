@@ -1,0 +1,33 @@
+version: '3.5'
+
+services:
+  postgres:
+    image: postgres:alpine3.17
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      PGDATA: /data/postgres
+      POSTGRES_DB: db
+    volumes:
+      - to_postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - network
+
+  backend:
+    build: .
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - spring.datasource.url=jdbc:postgresql://postgres:5432/db
+    ports:
+      - "8080:8080"
+    networks:
+      - network
+
+volumes:
+  to_postgres:
+
+networks:
+  network:
