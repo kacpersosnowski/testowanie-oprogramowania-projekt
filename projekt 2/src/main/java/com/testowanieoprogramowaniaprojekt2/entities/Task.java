@@ -25,7 +25,7 @@ public class Task {
 
     private String title;
     private String description;
-    private boolean isDone;
+    private boolean done;
     private LocalDate deadline;
     private int priority;
 }
