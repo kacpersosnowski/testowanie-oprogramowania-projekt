@@ -81,7 +81,7 @@ public class TaskService {
             }
         }
         if (foundTasks.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No tasks found"); //to powinno wgl to wyrzucać czy zwracać pustą liste?
+            return null;
         } else {
             return foundTasks;
         }
