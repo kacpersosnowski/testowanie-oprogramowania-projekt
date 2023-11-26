@@ -76,7 +76,7 @@ public class TaskService {
         List<Task> foundTasks = new ArrayList<Task>();
         List<Task> allTasks = taskRepository.findAll();
         for (Task t : allTasks) {
-            if (t.getTitle().contains(title)) {
+            if (t.getTitle().toLowerCase().contains(title.toLowerCase())) {
                 foundTasks.add(t);
             }
         }
