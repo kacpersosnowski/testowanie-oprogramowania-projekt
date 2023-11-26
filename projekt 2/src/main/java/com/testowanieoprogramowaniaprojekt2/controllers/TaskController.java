@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -97,6 +98,48 @@ public class TaskController {
     @PutMapping("/{id}")
     public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
         return taskService.updateTask(id, task);
+    }
+
+
+    @Operation(
+            summary = "Delete Tost by id"
+    )
+    @DeleteMapping("/{id}")
+    public void delete(
+            @Parameter(description = "Task id.", example = "1")
+            @PathVariable Long id
+    ) {
+        taskService.deleteById(id);
+    }
+
+    @Operation(
+        summary = "Toggle task completion status."
+        )
+    @ApiResponse(
+            responseCode = "200",
+            content = {
+                    @Content(schema = @Schema(implementation = Task.class), mediaType = "application/json")})
+    @ApiResponse(
+            responseCode = "404",
+            content = {@Content(schema = @Schema())})
+    @PatchMapping("/{id}")
+    public Task toggle(@PathVariable Long id) {
+        return taskService.toggle(id);
+    }
+
+    @Operation(
+        summary = "Get all tasks by provided title."
+        )
+    @ApiResponse(
+            responseCode = "200",
+            content = {
+                    @Content(schema = @Schema(implementation = Task.class), mediaType = "application/json")})
+    @ApiResponse(
+            responseCode = "400",
+            content = {@Content(schema = @Schema())})
+    @GetMapping("{/id}")
+    List<Task> getByTitle(@RequestBody String title) {
+        return taskService.getByTitle(title);
     }
 
 }
