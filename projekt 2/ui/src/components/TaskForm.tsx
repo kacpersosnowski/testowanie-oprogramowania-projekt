@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
 
+import { TrashIcon } from '../assets';
 import { Task } from '../models/Task';
 
 type FormProps = {
   onSubmit: (task: Task | Omit<Task, 'id'>) => void;
+  onDelete?: () => void;
   initialTask?: Task;
 };
 
-export const TaskForm: React.FC<FormProps> = ({ onSubmit, initialTask }) => {
-  const [task, setTask] = useState<Task | Omit<Task, 'id'>>({
-    id: initialTask?.id,
-    title: initialTask?.title || '',
-    description: initialTask?.description || '',
-    endDate: initialTask?.endDate || '',
-    priority: initialTask?.priority || 0,
-    isDone: initialTask?.isDone || false,
-  });
+export const TaskForm: React.FC<FormProps> = ({
+  onSubmit,
+  onDelete,
+  initialTask,
+}) => {
+  const [task, setTask] = useState<Task | Omit<Task, 'id'>>(
+    initialTask ?? {
+      title: '',
+      description: '',
+      deadline: '',
+      priority: 0,
+      done: false,
+    },
+  );
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -43,6 +50,12 @@ export const TaskForm: React.FC<FormProps> = ({ onSubmit, initialTask }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(task);
+  };
+
+  const handleDelete = () => {
+    if (initialTask && onDelete) {
+      onDelete();
+    }
   };
 
   return (
@@ -88,8 +101,8 @@ export const TaskForm: React.FC<FormProps> = ({ onSubmit, initialTask }) => {
         </label>
         <input
           type="text"
-          name="endDate"
-          value={task.endDate}
+          name="deadline"
+          value={task.deadline}
           onChange={handleChange}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           required
@@ -116,9 +129,10 @@ export const TaskForm: React.FC<FormProps> = ({ onSubmit, initialTask }) => {
           <input
             id="remember"
             type="checkbox"
-            name="isDone"
-            checked={task.isDone}
+            name="done"
+            checked={task.done}
             onChange={handleChange}
+            value=""
             className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
           />
         </div>
@@ -129,12 +143,24 @@ export const TaskForm: React.FC<FormProps> = ({ onSubmit, initialTask }) => {
           is Done?
         </label>
       </div>
-      <button
-        type="submit"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
-        Submit
-      </button>
+      <div className="flex gap-4">
+        <button
+          type="submit"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Submit
+        </button>
+        {initialTask && onDelete && (
+          <button
+            type="button"
+            className="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+            onClick={handleDelete}
+          >
+            <TrashIcon />
+            Delete
+          </button>
+        )}
+      </div>
     </form>
   );
 };

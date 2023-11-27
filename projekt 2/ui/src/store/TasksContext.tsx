@@ -67,7 +67,7 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
   };
 
   const getTasksSortedByDate = async () => {
-    return fetchData('/tasks/filter/date');
+    return fetchData('/tasks/chronologically');
   };
 
   const getTasksSortedByPriority = async () => {

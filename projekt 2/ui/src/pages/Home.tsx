@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import SearchIcon from '../assets/SearchIcon';
 import { Task } from '../components';
+import { TasksContext } from '../store/TasksContext';
 
 enum TaskStateFilter {
   all = 'all',
@@ -9,35 +10,70 @@ enum TaskStateFilter {
   undone = 'undone',
 }
 
-export default function App() {
+enum TaskSortFilter {
+  priority = 'priority',
+  date = 'date',
+}
+
+export default function Home() {
   const [filter, setFilter] = useState<TaskStateFilter>(TaskStateFilter.all);
+  const tasksContext = useContext(TasksContext);
+
+  if (!tasksContext) {
+    throw new Error('TasksContext is null');
+  }
+
+  const {
+    tasks,
+    getAllTasks,
+    getCompletedTasks,
+    getUncompletedTasks,
+    getTasksSortedByPriority,
+    getTasksSortedByDate,
+    deleteTask,
+  } = tasksContext;
+
+  useEffect(() => {
+    getAllTasks();
+  }, []);
 
   const handleFilterChange = (filter: TaskStateFilter) => {
     setFilter(filter);
+
+    switch (filter) {
+      case TaskStateFilter.all:
+        getAllTasks();
+        break;
+      case TaskStateFilter.done:
+        getCompletedTasks();
+        break;
+      case TaskStateFilter.undone:
+        getUncompletedTasks();
+        break;
+      default:
+        break;
+    }
   };
 
   const resetFilters = () => {
     setFilter(TaskStateFilter.all);
   };
 
-  const task = {
-    id: 1,
-    title: 'Lorem ipsum',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    endDate: '2021-06-30',
-    isDone: false,
-    priority: 2,
+  const handleSortChange = (filter: TaskSortFilter) => {
+    resetFilters();
+
+    switch (filter) {
+      case TaskSortFilter.priority:
+        getTasksSortedByPriority();
+        break;
+      case TaskSortFilter.date:
+        getTasksSortedByDate();
+        break;
+      default:
+        break;
+    }
   };
-  const task2 = {
-    id: 2,
-    title: 'Lorem ipsum Lorem ipsum',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    endDate: '2021-06-30',
-    isDone: false,
-    priority: 2,
-  };
+
   return (
     <>
       <div className="text-sm font-medium text-center bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 flex justify-between">
@@ -112,7 +148,7 @@ export default function App() {
             <a
               href="#"
               className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-              onClick={() => resetFilters()}
+              onClick={() => handleSortChange(TaskSortFilter.priority)}
             >
               Sort by priority
             </a>
@@ -121,20 +157,17 @@ export default function App() {
             <a
               href="#"
               className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-              onClick={() => resetFilters()}
+              onClick={() => handleSortChange(TaskSortFilter.date)}
             >
               Sort by date
             </a>
           </li>
         </ul>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 m-3">
-        <Task task={task} />
-        <Task task={task2} />
-        <Task task={task} />
-        <Task task={task} />
-        <Task task={task} />
-        <Task task={task} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-32 gap-y-8 m-3">
+        {tasks.map((task) => {
+          return <Task key={task.id} task={task} onDelete={deleteTask} />;
+        })}
       </div>
     </>
   );

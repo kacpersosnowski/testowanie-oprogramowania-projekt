@@ -7,16 +7,17 @@ export const Layout = () => {
   return (
     <div className="antialiased flex min-w-max min-h-screen bg-gray-50 dark:bg-gray-900">
       <aside className="flex flex-col gap-3 p-3 bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700">
-        <Tooltip id="tooltip-list-tasks" tooltipText="List tasks">
-          <Link to="/">
+        <Link to="/">
+          <Tooltip id="tooltip-list-tasks" tooltipText="List tasks">
             <ListIcon />
-          </Link>
-        </Tooltip>
-        <Tooltip id="tooltip-create-task" tooltipText="Add a new task">
-          <Link to="/create">
+          </Tooltip>
+        </Link>
+
+        <Link to="/create">
+          <Tooltip id="tooltip-create-task" tooltipText="Add a new task">
             <PlusIcon />
-          </Link>
-        </Tooltip>
+          </Tooltip>
+        </Link>
       </aside>
       <main className="w-full">
         <Outlet />
