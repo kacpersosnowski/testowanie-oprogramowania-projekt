@@ -52,17 +52,14 @@ public class TaskService {
         if (task.getTitle() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title cannot be null");
         }
-        if (verifyDate(task) == false) {
+        if (!verifyDate(task)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Task date is past");
         }
         return taskRepository.save(task);
     }
 
     private boolean verifyDate(Task task) {
-        if (LocalDate.now().isAfter(task.getDeadline())) {
-            return false;
-        }
-        return true;
+        return !LocalDate.now().isAfter(task.getDeadline());
     }
 
     public Task updateTask(Long id, Task task) {

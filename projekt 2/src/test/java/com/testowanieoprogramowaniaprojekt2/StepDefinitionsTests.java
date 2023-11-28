@@ -2,8 +2,7 @@ package com.testowanieoprogramowaniaprojekt2;
 
 import io.cucumber.java.en.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -23,13 +22,19 @@ import com.testowanieoprogramowaniaprojekt2.services.TaskService;
 import com.testowanieoprogramowaniaprojekt2.testData.TestDataBuilder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class StepDefinitions {
+public class StepDefinitionsTests {
     
     private Task task;
     private Task task1;
     private Task result;
+    private List<Task> listResult;
+
+    private final Long NON_EXISTENT_ID = 1000L;
 
     @Mock
     private TaskRepository taskRepository= mock(TaskRepository.class);
@@ -38,8 +43,14 @@ public class StepDefinitions {
     private TaskService taskService = new TaskService(taskRepository);
 
     @Given("everything is ok")
+    @Given("the desired task exists in the db")
     public void everything_is_ok() {
         task = TestDataBuilder.exampleTask1().task();
+    }
+
+    @Given("the desired task does not exist in the db")
+    public void task_does_not_exist_in_db() {
+        task = null;
     }
 
     @Given("the tasks title is empty")
@@ -66,8 +77,35 @@ public class StepDefinitions {
         .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @When("i want to look it up")
+    public void i_want_to_look_it_up() {
+        if(task != null) {
+            when(taskRepository.findById(task.getId()))
+                    .thenReturn(Optional.ofNullable(task));
+            result = taskService.getTaskById(task.getId());
+        } else {
+            when(taskRepository.findById(NON_EXISTENT_ID))
+                    .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+        }
+    }
+
+    @When("i want to find it by title")
+    public void i_want_to_find_it_by_title() {
+        if(task != null ) {
+            when(taskRepository.findAll())
+                    .thenReturn(List.of(task));
+            listResult = taskService.getByTitle(task.getTitle().substring(2));
+        } else {
+            List<Task> emptyList = new ArrayList<>();
+            when(taskRepository.findAll())
+                    .thenReturn(emptyList);
+            listResult = taskService.getByTitle("some title");
+        }
+    }
+
     @Then("the task should be saved to the db")
-    public void the_task_should_be_saved_to_the_db() {
+    @Then("it should be found")
+    public void the_task_should_be_found_in_the_db() {
         assertEquals(task, result);
     }
 
@@ -76,12 +114,26 @@ public class StepDefinitions {
         assertThrows(ResponseStatusException.class, () -> taskService.createTask(task));
     }
 
+    @Then("returning a task should return an error")
+    public void returning_task_should_return_an_error() {
+        assertThrows(ResponseStatusException.class, () -> taskService.getTaskById(NON_EXISTENT_ID));
+    }
+
+    @Then("it should return all tasks containing the desired title")
+    public void it_should_return_all_tasks_with_title() {
+        Task[] expectedResult = {task};
+        assertArrayEquals(expectedResult, listResult.toArray());
+    }
+
+    @Then("it should return null")
+    public void it_should_return_null() {
+        assertNull(listResult);
+    }
+
     @Then("not be saved to the db")
     public void not_be_saved_to_the_db() {
         verify(taskRepository, never()).save(task);
     }
-
-
 
     @Given("I want to delete a task")
     public void i_want_to_delete_a_task() {
