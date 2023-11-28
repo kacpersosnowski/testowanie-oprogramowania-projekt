@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,20 @@ public class TaskService {
     }
 
     public Task createTask(Task task) {
+        if (task.getTitle() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title cannot be null");
+        }
+        if (verifyDate(task) == false) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Task date is past");
+        }
         return taskRepository.save(task);
+    }
+
+    private boolean verifyDate(Task task) {
+        if (LocalDate.now().isAfter(task.getDeadline())) {
+            return false;
+        }
+        return true;
     }
 
     public Task updateTask(Long id, Task task) {
@@ -60,6 +74,7 @@ public class TaskService {
     }
 
     public void deleteById(Long id) {
+        taskRepository.findById(id);
         taskRepository.deleteById(id);
     }
 
