@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,4 +59,31 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    public void deleteById(Long id) {
+        taskRepository.deleteById(id);
+    }
+
+    public Task toggle(Long id) {
+        return taskRepository.findById(id)
+            .map(foundTask -> {
+                foundTask.setDone(!foundTask.isDone());
+                return taskRepository.save(foundTask);
+            })
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found in db."));
+    }
+
+    public List<Task> getByTitle(String title) {
+        List<Task> foundTasks = new ArrayList<Task>();
+        List<Task> allTasks = taskRepository.findAll();
+        for (Task t : allTasks) {
+            if (t.getTitle().toLowerCase().contains(title.toLowerCase())) {
+                foundTasks.add(t);
+            }
+        }
+        if (foundTasks.isEmpty()){
+            return null;
+        } else {
+            return foundTasks;
+        }
+    }
 }

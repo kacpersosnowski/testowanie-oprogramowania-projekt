@@ -9,8 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
