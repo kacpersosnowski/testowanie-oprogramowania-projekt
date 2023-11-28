@@ -6,7 +6,7 @@ import { Layout } from './components';
 import './config/axios';
 import './index.css';
 import CreateTaskForm from './pages/CreateTaskForm.tsx';
-import Home from './pages/Home.tsx';
+import Home from './pages/Home';
 import ModifyTaskForm from './pages/ModifyTaskForm.tsx';
 import { TasksContextProvider } from './store/TasksContext.tsx';
 
