@@ -13,6 +13,6 @@ Scenario: Date is already past
 	Given the tasks date has already past
 	When I add a new invalid task
 	Then saving should return an error
-And not be saved to the db
+	And not be saved to the db
 
 
