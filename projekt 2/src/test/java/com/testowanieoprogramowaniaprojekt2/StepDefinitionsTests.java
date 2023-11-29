@@ -197,7 +197,7 @@ public class StepDefinitionsTests {
         result = taskService.toggle(task.getId());
     }
 
-    @When("its status changed to done")
+    @Then("its status changed to done")
     public void status_is_done() {
         assertTrue(result.isDone());
     }
@@ -209,7 +209,7 @@ public class StepDefinitionsTests {
         result = taskService.toggle(task.getId());
     }
 
-    @When("its status changed to not done")
+    @Then("its status changed to not done")
     public void status_is_not_done() {
         assertFalse(result.isDone());
     }
