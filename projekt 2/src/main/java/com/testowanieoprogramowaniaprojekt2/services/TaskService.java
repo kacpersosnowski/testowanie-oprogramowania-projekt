@@ -98,4 +98,11 @@ public class TaskService {
             return foundTasks;
         }
     }
+
+    public double getStatistics() {
+        List<Task> completedTasks = taskRepository.findAllByDoneIsTrue();
+        List<Task> allTasks = taskRepository.findAll();
+
+        return (double) completedTasks.size() / allTasks.size();
+    }
 }
