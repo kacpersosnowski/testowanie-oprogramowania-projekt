@@ -172,4 +172,43 @@ public class StepDefinitionsTests {
         assertThrows(ResponseStatusException.class, () -> taskService.getTaskById(task1.getId()));
     }
 
+    @Given("task exists in the db")
+    public void there_are_tasks_in_db() {
+        task = TestDataBuilder.exampleTask1().task();
+    }
+    
+    @Given("is not yet completed")
+    public void task_is_not_completed() {
+        task.setDone(false);
+    }
+    
+    @Given("is marked as completed")
+    public void task_is_completed() {
+        task.setDone(true);
+    }
+    
+    @When("I want to mark it as done")
+    public void mark_as_done() {
+        when(taskRepository.findById(task.getId())).thenReturn(Optional.ofNullable(task));
+        when(taskRepository.save(task)).thenReturn(task);
+        result = taskService.toggle(task.getId());
+    }
+
+    @When("its status changed to done")
+    public void status_is_done() {
+        assertTrue(result.isDone());
+    }
+
+    @When("I want to mark it as not complete")
+    public void mark_as_not_done() {
+        when(taskRepository.findById(task.getId())).thenReturn(Optional.ofNullable(task));
+        when(taskRepository.save(task)).thenReturn(task);
+        result = taskService.toggle(task.getId());
+    }
+
+    @When("its status changed to not done")
+    public void status_is_not_done() {
+        assertFalse(result.isDone());
+    }
+
 }
