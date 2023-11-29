@@ -88,12 +88,10 @@ export default function Home() {
   return (
     <>
       <div className="text-sm font-medium text-center bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 flex justify-between">
-        <SearchInput />
+        {/* <SearchInput />  Chuj wie jak endpoint do tego dziala */}
         <ul className="flex flex-wrap -mb-px">
           <li>
             <a
-              data-modal-target={SORT_MODAL_ID}
-              data-modal-toggle={SORT_MODAL_ID}
               className="flex p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 cursor-pointer items-center"
               onClick={() => setSortModalVisible(true)}
             >
@@ -103,8 +101,6 @@ export default function Home() {
           </li>
           <li>
             <a
-              data-modal-target={FILTER_MODAL_ID}
-              data-modal-toggle={FILTER_MODAL_ID}
               className="flex p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 cursor-pointer items-center"
               onClick={() => setFilterModalVisible(true)}
             >
