@@ -345,7 +345,8 @@ public class StepDefinitionsTests {
 
     @When("I update a invalid task")
     public void i_update_a_invalid_task() {
-        when(taskRepository.updateTask(task1.getId(), task1))
+        task1.setId(12345L);
+        when(taskRepository.findById(task1.getId()))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
@@ -357,6 +358,6 @@ public class StepDefinitionsTests {
 
     @Given("task is not found in db")
     public void task_is_not_found_in_db() {
-        verify(taskRepository, never()).updateTask(task1.getId(), task1);
+        verify(taskRepository, never()).save(task1);
     }
 }
