@@ -36,6 +36,8 @@ public class StepDefinitionsTests {
     private List<Task> allTasks;
     private List<Task> doneTasks;
     private double statisticsResult;
+    private List<Task> exampleTaskList;
+    private int priority;
 
     private final Long NON_EXISTENT_ID = 1000L;
 
@@ -230,6 +232,102 @@ public class StepDefinitionsTests {
     @Then("it should return it")
     public void return_statistics() {
         assertEquals(0.5, statisticsResult, 0.001);
+
+    @Given("there are tasks in the db")
+    public void there_are_tasks_in_the_db() {
+        exampleTaskList = TestDataBuilder.exampleTaskList().taskList();
+    }
+
+    @When("I request to retrieve them")
+    public void i_request_to_retrieve_them() {
+        when(taskRepository.findAll())
+                .thenReturn(exampleTaskList);
+        listResult = taskService.getAllTasks();
+    }
+
+    @Then("it should retrieve all of them")
+    public void all_tasks_should_be_returned() {
+        Task[] expectedResult = {exampleTaskList.get(0), exampleTaskList.get(1), exampleTaskList.get(2)};
+        assertArrayEquals(expectedResult, listResult.toArray());
+    }
+
+
+    @When("I request to retrieve them chronologically")
+    public void i_request_to_retrieve_them_chronologically() {
+        when(taskRepository.findByOrderByDeadlineAsc())
+                .thenReturn(exampleTaskList);
+        listResult = taskService.getAllTasksChronologically();
+    }
+
+    @Then("it should retrieve all of them arranged by ascending date")
+    public void it_should_retrieve_all_of_them_arranged_by_ascending_date() {
+        Task[] expectedResult = {exampleTaskList.get(0), exampleTaskList.get(1), exampleTaskList.get(2)};
+        assertArrayEquals(expectedResult, listResult.toArray());
+    }
+
+
+    @Given("there are uncompleted tasks in the db")
+    public void there_are_uncompleted_tasks_in_the_db() {
+        exampleTaskList = TestDataBuilder.exampleTaskList().taskList();
+        exampleTaskList.remove(0);
+    }
+
+    @When("I want to retrieve uncompleted tasks")
+    public void i_want_to_retrieve_uncompleted_tasks() {
+        when(taskRepository.findAllByDoneIsFalse())
+                .thenReturn(exampleTaskList);
+        listResult = taskService.getUncompletedTasks();
+    }
+
+    @Then("it should retrieve all uncompleted tasks")
+    public void it_should_retrieve_all_uncompleted_tasks() {
+        Task[] expectedResult = {exampleTaskList.get(0), exampleTaskList.get(1)};
+        assertArrayEquals(expectedResult, listResult.toArray());
+        assertFalse(expectedResult[0].isDone());
+        assertFalse(expectedResult[1].isDone());
+    }
+
+    @Given("there are completed tasks in the db")
+    public void there_are_completed_tasks_in_the_db() {
+        exampleTaskList = TestDataBuilder.exampleTaskList().taskList();
+        exampleTaskList = List.of(exampleTaskList.get(0));
+    }
+
+    @When("I want to retrieve completed tasks")
+    public void i_want_to_retrieve_completed_tasks() {
+        when(taskRepository.findAllByDoneIsTrue())
+                .thenReturn(exampleTaskList);
+        listResult = taskService.getCompletedTasks();
+    }
+
+    @Then("it should retrieve all completed tasks")
+    public void it_should_retrieve_all_completed_tasks() {
+        Task[] expectedResult = {exampleTaskList.get(0)};
+        assertArrayEquals(expectedResult, listResult.toArray());
+        assertTrue(expectedResult[0].isDone());
+    }
+
+
+    @Given("there are tasks in the db with given priority")
+    public void there_are_tasks_in_the_db_with_given_priority() {
+        priority = 3;
+        exampleTaskList = TestDataBuilder.exampleTaskList().taskList();
+        exampleTaskList.remove(0);
+    }
+
+    @When("I request to retrieve them by priority")
+    public void i_request_to_retrieve_them_by_priority() {
+        when(taskRepository.findAllByPriorityIs(priority))
+                .thenReturn(exampleTaskList);
+        listResult = taskService.getByPriority(priority);
+    }
+
+    @Then("it should retrieve tasks with given priority")
+    public void it_should_retrieve_tasks_with_given_priority() {
+        Task[] expectedResult = {exampleTaskList.get(0), exampleTaskList.get(1)};
+        assertArrayEquals(expectedResult, listResult.toArray());
+        assertEquals(expectedResult[0].getPriority(), priority);
+        assertEquals(expectedResult[1].getPriority(), priority);
     }
 
 }
