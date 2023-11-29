@@ -33,6 +33,9 @@ public class StepDefinitionsTests {
     private Task task1;
     private Task result;
     private List<Task> listResult;
+    private List<Task> allTasks;
+    private List<Task> doneTasks;
+    private double statisticsResult;
 
     private final Long NON_EXISTENT_ID = 1000L;
 
@@ -209,6 +212,24 @@ public class StepDefinitionsTests {
     @When("its status changed to not done")
     public void status_is_not_done() {
         assertFalse(result.isDone());
+    }
+
+    @Given("there are tasks in the db")
+    public void tasks_in_db() {
+        allTasks = TestDataBuilder.exampleTasks();
+        doneTasks = TestDataBuilder.exampleDoneTasks();
+    }
+
+    @When("i want to see the statistic")
+    public void get_statistics() {
+        when(taskRepository.findAll()).thenReturn(allTasks);
+        when(taskRepository.findAllByDoneIsTrue()).thenReturn(doneTasks);
+        statisticsResult = taskService.getStatistics();
+    }
+
+    @Then("it should return it")
+    public void return_statistics() {
+        assertEquals(0.5, statisticsResult, 0.001);
     }
 
 }
