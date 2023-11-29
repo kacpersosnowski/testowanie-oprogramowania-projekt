@@ -2,7 +2,11 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 
 import { SearchIcon } from '../../assets';
 
-export function SearchInput() {
+interface Props {
+  onSearch: (searchTerm: string) => void;
+}
+
+export function SearchInput({ onSearch }: Props) {
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -13,6 +17,7 @@ export function SearchInput() {
     event.preventDefault();
     console.log(searchTerm);
 
+    onSearch(searchTerm);
     setSearchTerm('');
   };
 

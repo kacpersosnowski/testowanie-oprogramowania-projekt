@@ -70,8 +70,12 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
     return fetchData('/tasks/chronologically');
   };
 
-  const getTasksSortedByPriority = async () => {
-    return fetchData('/tasks/filter/priority');
+  const getTasksFilteredByPriority = async (priority: number) => {
+    return fetchData(`/tasks/filter/priority/${priority}`);
+  };
+
+  const getTasksFilteredByTitle = async (title: string) => {
+    return fetchData(`/tasks/filter/title?search=${title}`);
   };
 
   const getCompletedTasks = async () => {
@@ -127,15 +131,6 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
     }
   };
 
-  const getTaskByTitle = async (titleData: Pick<Task, 'title'>) => {
-    try {
-      const response = await axios.post<Task>('/tasks/get-by-title', titleData);
-      return { isSuccess: true, error: null, task: response.data };
-    } catch (error) {
-      return handleError(error);
-    }
-  };
-
   const deleteTask = async (id: number) => {
     try {
       await axios.delete(`/tasks/${id}`);
@@ -151,14 +146,14 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
     getAllTasks,
     getTaskDetails,
     getTasksSortedByDate,
-    getTasksSortedByPriority,
+    getTasksFilteredByPriority,
+    getTasksFilteredByTitle,
     getCompletedTasks,
     getUncompletedTasks,
     createTask,
     updateTask,
     partialUpdateTask,
     deleteTask,
-    getTaskByTitle,
   };
 
   return (

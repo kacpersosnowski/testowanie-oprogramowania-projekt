@@ -6,7 +6,8 @@ export type TasksContextState = {
   tasks: Task[];
   getAllTasks: () => Promise<RequestResult>;
   getTasksSortedByDate: () => Promise<RequestResult>;
-  getTasksSortedByPriority: () => Promise<RequestResult>;
+  getTasksFilteredByPriority: (priority: number) => Promise<RequestResult>;
+  getTasksFilteredByTitle: (title: string) => Promise<RequestResult>;
   getCompletedTasks: () => Promise<RequestResult>;
   getUncompletedTasks: () => Promise<RequestResult>;
   getTaskDetails: (id: number) => Promise<RequestResult>;
@@ -16,7 +17,6 @@ export type TasksContextState = {
     id: number,
     taskData: Partial<Task>,
   ) => Promise<RequestResult>;
-  getTaskByTitle: (titleData: Pick<Task, 'title'>) => Promise<RequestResult>;
   deleteTask: (id: number) => Promise<RequestResult>;
 };
 

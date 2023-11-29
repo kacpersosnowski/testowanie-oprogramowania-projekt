@@ -137,8 +137,8 @@ public class TaskController {
     @ApiResponse(
             responseCode = "400",
             content = {@Content(schema = @Schema())})
-    @PostMapping("/{id}")
-    List<Task> getByTitle(@RequestBody String title) {
+    @GetMapping("/filter/title")
+    List<Task> getByTitle(@RequestParam("search") String title) {
         return taskService.getByTitle(title);
     }
 
