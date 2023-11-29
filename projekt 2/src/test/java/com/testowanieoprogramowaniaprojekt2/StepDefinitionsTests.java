@@ -193,6 +193,7 @@ public class StepDefinitionsTests {
     }
 
     @When("I want to mark it as done")
+    @When("I want to mark it as not complete")
     public void mark_as_done() {
         when(taskRepository.findById(task.getId())).thenReturn(Optional.ofNullable(task));
         when(taskRepository.save(task)).thenReturn(task);
@@ -202,13 +203,6 @@ public class StepDefinitionsTests {
     @Then("its status changed to done")
     public void status_is_done() {
         assertTrue(result.isDone());
-    }
-
-    @When("I want to mark it as not complete")
-    public void mark_as_not_done() {
-        when(taskRepository.findById(task.getId())).thenReturn(Optional.ofNullable(task));
-        when(taskRepository.save(task)).thenReturn(task);
-        result = taskService.toggle(task.getId());
     }
 
     @Then("its status changed to not done")
@@ -232,8 +226,9 @@ public class StepDefinitionsTests {
     @Then("it should return it")
     public void return_statistics() {
         assertEquals(0.5, statisticsResult, 0.001);
+    }
 
-    @Given("there are tasks in the db")
+    @Given("there are some tasks in the db")
     public void there_are_tasks_in_the_db() {
         exampleTaskList = TestDataBuilder.exampleTaskList().taskList();
     }
