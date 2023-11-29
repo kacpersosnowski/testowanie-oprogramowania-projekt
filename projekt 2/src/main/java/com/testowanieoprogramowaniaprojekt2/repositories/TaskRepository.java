@@ -15,4 +15,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByOrderByDeadlineAsc();
 
+    Task updateTask(Long id, Task task);
 }

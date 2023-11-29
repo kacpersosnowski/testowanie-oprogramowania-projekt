@@ -325,4 +325,38 @@ public class StepDefinitionsTests {
         assertEquals(expectedResult[1].getPriority(), priority);
     }
 
+    @Given("I want to update task")
+    public void i_want_to_update_task() {
+        task1 = TestDataBuilder.exampleTask1().task();
+    }
+
+    @When("I update a valid task")
+    public void i_update_a_valid_task() {
+        when(taskRepository.findById(task1.getId()))
+                .thenReturn(Optional.ofNullable(task1));
+        when(taskRepository.save(task1)).thenReturn(task1);
+        result = taskService.updateTask(task1.getId(), task1);
+    }
+
+    @Then("the task should be updated in the db")
+    public void the_task_should_be_updated_in_the_db() {
+        assertEquals(task1, result);
+    }
+
+    @When("I update a invalid task")
+    public void i_update_a_invalid_task() {
+        when(taskRepository.updateTask(task1.getId(), task1))
+                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @Given("the tasks ID is invalid")
+    public void the_tasks_ID_is_invalid() {
+        task1 = TestDataBuilder.exampleTask1().task();
+        task1.setId(null);
+    }
+
+    @Given("task is not found in db")
+    public void task_is_not_found_in_db() {
+        verify(taskRepository, never()).updateTask(task1.getId(), task1);
+    }
 }
