@@ -28,7 +28,7 @@ import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class StepDefinitionsTests {
-    
+
     private Task task;
     private Task task1;
     private Task result;
@@ -37,7 +37,7 @@ public class StepDefinitionsTests {
     private final Long NON_EXISTENT_ID = 1000L;
 
     @Mock
-    private TaskRepository taskRepository= mock(TaskRepository.class);
+    private TaskRepository taskRepository = mock(TaskRepository.class);
 
     @InjectMocks
     private TaskService taskService = new TaskService(taskRepository);
@@ -61,8 +61,8 @@ public class StepDefinitionsTests {
 
     @Given("the tasks date has already past")
     public void the_tasks_date_has_already_past() {
-    task = TestDataBuilder.exampleTask1().task();
-        task.setDeadline(LocalDate.of(2010, 11,11));
+        task = TestDataBuilder.exampleTask1().task();
+        task.setDeadline(LocalDate.of(2010, 11, 11));
     }
 
     @When("I add a new valid task")
@@ -74,12 +74,12 @@ public class StepDefinitionsTests {
     @When("I add a new invalid task")
     public void i_add_a_new_invalid_task() {
         when(taskRepository.save(task))
-        .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @When("i want to look it up")
     public void i_want_to_look_it_up() {
-        if(task != null) {
+        if (task != null) {
             when(taskRepository.findById(task.getId()))
                     .thenReturn(Optional.ofNullable(task));
             result = taskService.getTaskById(task.getId());
@@ -91,7 +91,7 @@ public class StepDefinitionsTests {
 
     @When("i want to find it by title")
     public void i_want_to_find_it_by_title() {
-        if(task != null ) {
+        if (task != null) {
             when(taskRepository.findAll())
                     .thenReturn(List.of(task));
             listResult = taskService.getByTitle(task.getTitle().substring(2));
@@ -176,17 +176,17 @@ public class StepDefinitionsTests {
     public void there_are_tasks_in_db() {
         task = TestDataBuilder.exampleTask1().task();
     }
-    
+
     @Given("is not yet completed")
     public void task_is_not_completed() {
         task.setDone(false);
     }
-    
+
     @Given("is marked as completed")
     public void task_is_completed() {
         task.setDone(true);
     }
-    
+
     @When("I want to mark it as done")
     public void mark_as_done() {
         when(taskRepository.findById(task.getId())).thenReturn(Optional.ofNullable(task));
