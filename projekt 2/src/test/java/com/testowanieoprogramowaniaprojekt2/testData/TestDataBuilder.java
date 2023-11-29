@@ -17,8 +17,9 @@ public class TestDataBuilder {
                 .id(1L)
                 .title("taskTitle")
                 .description("taskDescription")
-                .done(false)
+                .done(true)
                 .deadline(LocalDate.of(2024,11,11))
+                .priority(1)
                 .build();
 
         return new ExampleTask(task);
@@ -32,9 +33,32 @@ public class TestDataBuilder {
                 .description("taskDescription")
                 .done(false)
                 .deadline(LocalDate.of(2025,11,11))
+                .priority(3)
                 .build();
 
         return new ExampleTask(task);
     }
-    
+
+    public static ExampleTask exampleTask3() {
+        Task task = Task
+                .builder()
+                .id(2L)
+                .title("taskTitle2")
+                .description("taskDescription")
+                .done(false)
+                .deadline(LocalDate.of(2026,11,11))
+                .priority(3)
+                .build();
+
+        return new ExampleTask(task);
+    }
+
+    public static ExampleTaskList exampleTaskList() {
+        List<Task> taskList = new ArrayList<>();
+        taskList.add(exampleTask1().task());
+        taskList.add(exampleTask2().task());
+        taskList.add(exampleTask3().task());
+        return new ExampleTaskList(taskList);
+    }
+
 }
