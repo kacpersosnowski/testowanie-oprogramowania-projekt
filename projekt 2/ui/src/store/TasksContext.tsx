@@ -1,12 +1,14 @@
-import React from "react";
+import React from 'react';
+
+import axios, { AxiosError } from 'axios';
+
+import { Task } from '../models/Task';
 import {
   RequestResult,
   TasksAction,
   TasksActionKind,
   TasksContextState,
-} from "./TasksContext.types";
-import axios, { AxiosError } from "axios";
-import { Task } from "../models/Task";
+} from './TasksContext.types';
 
 export const TasksContext = React.createContext<TasksContextState | null>(null);
 
@@ -18,7 +20,7 @@ const tasksReducer = (state: Task[], action: TasksAction) => {
       return [...state, action.payload];
     case TasksActionKind.UPDATE_TASK: {
       const oldTaskIndex = state.findIndex(
-        (task) => task.id === action.payload.id
+        (task) => task.id === action.payload.id,
       );
       const updatedTasks = [...state];
       updatedTasks[oldTaskIndex] = {
@@ -45,7 +47,7 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
     } else {
       return {
         isSuccess: false,
-        error: new AxiosError("Unknown error occurred"),
+        error: new AxiosError('Unknown error occurred'),
       };
     }
   };
@@ -61,23 +63,23 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
   };
 
   const getAllTasks = async () => {
-    return fetchData("/tasks");
+    return fetchData('/tasks');
   };
 
   const getTasksSortedByDate = async () => {
-    return fetchData("/tasks/filter/date");
+    return fetchData('/tasks/chronologically');
   };
 
   const getTasksSortedByPriority = async () => {
-    return fetchData("/tasks/filter/priority");
+    return fetchData('/tasks/filter/priority');
   };
 
   const getCompletedTasks = async () => {
-    return fetchData("/tasks/completed");
+    return fetchData('/tasks/completed');
   };
 
   const getUncompletedTasks = async () => {
-    return fetchData("/tasks/uncompleted");
+    return fetchData('/tasks/uncompleted');
   };
 
   const getTaskDetails = async (id: number) => {
@@ -89,9 +91,9 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
     }
   };
 
-  const createTask = async (taskData: Omit<Task, "id">) => {
+  const createTask = async (taskData: Omit<Task, 'id'>) => {
     try {
-      const response = await axios.post<Task>("/tasks", taskData);
+      const response = await axios.post<Task>('/tasks', taskData);
       dispatch({ type: TasksActionKind.ADD_TASK, payload: response.data });
       return { isSuccess: true, error: null };
     } catch (error) {
@@ -125,9 +127,9 @@ export const TasksContextProvider: React.FC<React.PropsWithChildren> = ({
     }
   };
 
-  const getTaskByTitle = async (titleData: Pick<Task, "title">) => {
+  const getTaskByTitle = async (titleData: Pick<Task, 'title'>) => {
     try {
-      const response = await axios.post<Task>("/tasks/get-by-title", titleData);
+      const response = await axios.post<Task>('/tasks/get-by-title', titleData);
       return { isSuccess: true, error: null, task: response.data };
     } catch (error) {
       return handleError(error);
