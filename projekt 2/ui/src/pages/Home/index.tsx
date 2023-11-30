@@ -32,6 +32,8 @@ export default function Home() {
     tasks,
     getAllTasks,
     getTasksSortedByDate,
+    getTasksFilteredByPriority,
+    getTasksFilteredByTitle,
     deleteTask,
     getCompletedTasks,
     getUncompletedTasks,
@@ -51,6 +53,7 @@ export default function Home() {
 
     if (taskPriorityFilter) {
       console.log(taskPriorityFilter);
+      getTasksFilteredByPriority(taskPriorityFilter);
       return;
     }
 
@@ -85,10 +88,14 @@ export default function Home() {
     }
   };
 
+  const handleSearch = (searchTerm: string) => {
+    getTasksFilteredByTitle(searchTerm);
+  };
+
   return (
     <>
       <div className="text-sm font-medium text-center bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 flex justify-between">
-        {/* <SearchInput />  Chuj wie jak endpoint do tego dziala */}
+        <SearchInput onSearch={handleSearch} />
         <ul className="flex flex-wrap -mb-px">
           <li>
             <a
@@ -111,9 +118,10 @@ export default function Home() {
         </ul>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-32 gap-y-8 m-3">
-        {tasks.map((task) => {
-          return <Task key={task.id} task={task} onDelete={deleteTask} />;
-        })}
+        {tasks &&
+          tasks.map((task) => {
+            return <Task key={task.id} task={task} onDelete={deleteTask} />;
+          })}
       </div>
 
       <FilterModal
