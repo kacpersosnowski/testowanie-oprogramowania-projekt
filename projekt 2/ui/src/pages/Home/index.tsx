@@ -99,6 +99,7 @@ export default function Home() {
         <ul className="flex flex-wrap -mb-px">
           <li>
             <a
+              id="sort-option"
               className="flex p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 cursor-pointer items-center"
               onClick={() => setSortModalVisible(true)}
             >
@@ -108,6 +109,7 @@ export default function Home() {
           </li>
           <li>
             <a
+              id="filter-option"
               className="flex p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 cursor-pointer items-center"
               onClick={() => setFilterModalVisible(true)}
             >
