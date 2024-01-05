@@ -42,6 +42,13 @@ services:
     networks:
       - network
 
+  testcafe:
+    image: testcafe/testcafe
+    command: "remote tests/tests.ts"
+    volumes:
+      - ./ui/tests/testcafe:/tests
+    network_mode: host
+
 volumes:
   to_postgres:
   node_modules:
