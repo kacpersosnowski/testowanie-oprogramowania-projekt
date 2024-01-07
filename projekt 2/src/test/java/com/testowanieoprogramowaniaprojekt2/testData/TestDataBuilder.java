@@ -5,7 +5,6 @@ import com.testowanieoprogramowaniaprojekt2.entities.Task;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class TestDataBuilder {
 
@@ -21,7 +20,7 @@ public class TestDataBuilder {
                 .title("taskTitle")
                 .description("taskDescription")
                 .done(true)
-                .deadline(LocalDate.of(2024,11,11))
+                .deadline(LocalDate.of(2024, 11, 11))
                 .priority(1)
                 .build();
 
@@ -35,7 +34,7 @@ public class TestDataBuilder {
                 .title("taskTitle2")
                 .description("taskDescription")
                 .done(false)
-                .deadline(LocalDate.of(2025,11,11))
+                .deadline(LocalDate.of(2025, 11, 11))
                 .priority(3)
                 .build();
 
@@ -105,7 +104,7 @@ public class TestDataBuilder {
 
         return new ArrayList<>(List.of(task3, task4));
     }
-  
+
     public static ExampleTask exampleTask3() {
         Task task = Task
                 .builder()
@@ -113,7 +112,7 @@ public class TestDataBuilder {
                 .title("taskTitle2")
                 .description("taskDescription")
                 .done(false)
-                .deadline(LocalDate.of(2026,11,11))
+                .deadline(LocalDate.of(2026, 11, 11))
                 .priority(3)
                 .build();
 
