@@ -15,4 +15,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByOrderByDeadlineAsc();
 
+    long countByDone(boolean done);
+
+    long countByIdNotNull();
+
 }
