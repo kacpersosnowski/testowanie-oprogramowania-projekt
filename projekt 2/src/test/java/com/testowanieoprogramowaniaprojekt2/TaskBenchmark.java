@@ -2,6 +2,7 @@ package com.testowanieoprogramowaniaprojekt2;
 
 import com.testowanieoprogramowaniaprojekt2.controllers.TaskController;
 import com.testowanieoprogramowaniaprojekt2.entities.Task;
+import com.testowanieoprogramowaniaprojekt2.services.TaskService;
 import com.testowanieoprogramowaniaprojekt2.testData.TestDataBuilder;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
@@ -19,12 +20,13 @@ import java.util.concurrent.TimeUnit;
 @Warmup(iterations = 2, time = 1)
 @Measurement(iterations = 10, time = 1)
 @Fork(value = 1)
-public class TaskControllerBenchmark {
+public class TaskBenchmark {
 
     @State(Scope.Benchmark)
     public static class BenchmarkState {
         ConfigurableApplicationContext context;
         TaskController taskController;
+        TaskService taskService;
         ArrayList<Task> tasks;
         Task newTask;
         Task updatedTask1;
@@ -35,6 +37,7 @@ public class TaskControllerBenchmark {
         public synchronized void initialize() {
             context = SpringApplication.run(Application.class);
             taskController = context.getBean(TaskController.class);
+            taskService = context.getBean(TaskService.class);
 
             for (Task task : TestDataBuilder.exampleTasks()) {
                 taskController.createTask(task);
@@ -138,7 +141,6 @@ public class TaskControllerBenchmark {
     public static void getByTitleBenchmarkAll(BenchmarkState state, Blackhole blackhole) {
         String titleToSearch = "some";
         blackhole.consume(state.taskController.getByTitle(titleToSearch));
-
     }
 
     @Benchmark
@@ -155,6 +157,38 @@ public class TaskControllerBenchmark {
     @Benchmark
     public static void getSummaryBenchmarkNone(BenchmarkState state, Blackhole blackhole) {
         blackhole.consume(state.taskController.getSummary());
+    }
+
+    @Benchmark
+    public static void getAllTasksServiceBenchmark(BenchmarkState state, Blackhole blackhole) {
+        blackhole.consume(state.taskService.getAllTasks());
+    }
+
+    @Benchmark
+    public static void getByIdServiceBenchmark(BenchmarkState state, Blackhole blackhole) {
+        Long taskId = state.tasks.get(0).getId();
+        blackhole.consume(state.taskService.getTaskById(taskId));
+    }
+
+    @Benchmark
+    public static void updateTaskTitleServiceBenchmark(BenchmarkState state, Blackhole blackhole) {
+        Long taskId = state.tasks.get(1).getId();
+        blackhole.consume(state.taskService.updateTask(taskId, state.updatedTask1));
+    }
+
+    @Benchmark
+    public static void createTaskServiceBenchmark(BenchmarkState state, Blackhole blackhole) {
+        blackhole.consume(state.taskService.createTask(state.newTask));
+    }
+
+    @Benchmark
+    public static void getAllTaskChronologicallyServiceBenchmark(BenchmarkState state, Blackhole blackhole) {
+        blackhole.consume(state.taskService.getAllTasksChronologically());
+    }
+
+    @Benchmark
+    public static void getUncompletedServiceBenchmark(BenchmarkState state, Blackhole blackhole) {
+        blackhole.consume(state.taskService.getUncompletedTasks());
     }
 
     @SpringBootApplication
