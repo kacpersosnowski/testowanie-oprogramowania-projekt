@@ -21,7 +21,7 @@ public class TaskService {
 
     public Task getTaskById(Long id) {
         return taskRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found with id: " + id));
     }
 
     public List<Task> getAllTasks() {
@@ -104,5 +104,9 @@ public class TaskService {
         List<Task> allTasks = taskRepository.findAll();
 
         return (double) completedTasks.size() / allTasks.size();
+    }
+
+    public double getSummary() {
+        return (double) taskRepository.countByDone(true) / taskRepository.countByIdNotNull();
     }
 }

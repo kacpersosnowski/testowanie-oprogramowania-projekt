@@ -33,7 +33,7 @@ public class TaskController {
             responseCode = "500",
             content = {@Content(schema = @Schema())})
     @GetMapping("/{id}")
-    Task getById(@PathVariable Long id) {
+    public Task getById(@PathVariable Long id) {
         return taskService.getTaskById(id);
     }
 
@@ -51,13 +51,13 @@ public class TaskController {
 
     @Operation(summary = "Get all completed tasks.")
     @GetMapping("/completed")
-    List<Task> getCompleted() {
+    public List<Task> getCompleted() {
         return taskService.getCompletedTasks();
     }
 
     @Operation(summary = "Get all uncompleted tasks.")
     @GetMapping("/uncompleted")
-    List<Task> getUncompleted() {
+    public List<Task> getUncompleted() {
         return taskService.getUncompletedTasks();
     }
 
@@ -70,7 +70,7 @@ public class TaskController {
             responseCode = "400",
             content = {@Content(schema = @Schema())})
     @GetMapping("/filter/priority/{priority}")
-    List<Task> getFilteredByPriority(@PathVariable int priority) {
+    public List<Task> getFilteredByPriority(@PathVariable int priority) {
         return taskService.getByPriority(priority);
     }
 
@@ -101,24 +101,18 @@ public class TaskController {
     }
 
 
-    @Operation(
-            summary = "Delete Tost by id"
-    )
+    @Operation(summary = "Delete Tost by id")
     @DeleteMapping("/{id}")
     public void delete(
             @Parameter(description = "Task id.", example = "1")
-            @PathVariable Long id
-    ) {
+            @PathVariable Long id) {
         taskService.deleteById(id);
     }
 
-    @Operation(
-        summary = "Toggle task completion status."
-        )
+    @Operation(summary = "Toggle task completion status.")
     @ApiResponse(
             responseCode = "200",
-            content = {
-                    @Content(schema = @Schema(implementation = Task.class), mediaType = "application/json")})
+            content = {@Content(schema = @Schema(implementation = Task.class), mediaType = "application/json")})
     @ApiResponse(
             responseCode = "404",
             content = {@Content(schema = @Schema())})
@@ -127,19 +121,27 @@ public class TaskController {
         return taskService.toggle(id);
     }
 
-    @Operation(
-        summary = "Get all tasks by provided title."
-        )
+    @Operation(summary = "Get all tasks by provided title.")
     @ApiResponse(
             responseCode = "200",
-            content = {
-                    @Content(schema = @Schema(implementation = Task.class), mediaType = "application/json")})
+            content = {@Content(schema = @Schema(implementation = Task.class), mediaType = "application/json")})
     @ApiResponse(
             responseCode = "400",
             content = {@Content(schema = @Schema())})
     @GetMapping("/filter/title")
-    List<Task> getByTitle(@RequestParam("search") String title) {
+    public List<Task> getByTitle(@RequestParam("search") String title) {
         return taskService.getByTitle(title);
     }
 
+    @Operation(summary = "Show completed/all statistics")
+    @GetMapping("/summary")
+    public double getStatistics() {
+        return taskService.getStatistics();
+    }
+
+    @Operation(summary = "Show completed/all statistics but faster")
+    @GetMapping("/summary2")
+    public double getSummary() {
+        return taskService.getSummary();
+    }
 }
