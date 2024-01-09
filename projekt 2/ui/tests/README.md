@@ -11,3 +11,13 @@ Then navigate to the given url.
 
 Install testcafe: **npm install -g testcafe**
 Go to the testcafe directory and run command: **testcafe chrome tests.ts**
+
+
+## Selenium
+
+### Locally:
+
+Install selenium webdriver: **npm install selenium-webdriver**
+Install mocha testrunner: **npm install mocha**
+
+Run: **npx mocha [Path to test file]**
