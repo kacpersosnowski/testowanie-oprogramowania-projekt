@@ -1,0 +1,10 @@
+{
+  "simulation": "com.testowanieoprogramowaniaprojekt2.gatling.GetAllSimulation",
+  "simulationId": "getallsimulation",
+  "start": 1704918095980,
+  "description": "",
+  "scenarios": ["Get all tasks"],
+  "assertions": [
+
+  ]
+}

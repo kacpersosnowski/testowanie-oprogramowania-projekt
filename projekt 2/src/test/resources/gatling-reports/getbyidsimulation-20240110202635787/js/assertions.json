@@ -1,0 +1,10 @@
+{
+  "simulation": "com.testowanieoprogramowaniaprojekt2.gatling.GetByIdSimulation",
+  "simulationId": "getbyidsimulation",
+  "start": 1704918395787,
+  "description": "",
+  "scenarios": ["Get task by id"],
+  "assertions": [
+
+  ]
+}

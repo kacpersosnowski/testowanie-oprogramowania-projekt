@@ -1,0 +1,10 @@
+{
+  "simulation": "com.testowanieoprogramowaniaprojekt2.gatling.GetFilteredByTitleSimulation",
+  "simulationId": "getfilteredbytitlesimulation",
+  "start": 1704918995440,
+  "description": "",
+  "scenarios": ["Get tasks filtered by title"],
+  "assertions": [
+
+  ]
+}
