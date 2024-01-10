@@ -2,25 +2,6 @@ import { Builder, By, Key, until } from 'selenium-webdriver';
 import { describe, it, after } from 'mocha';
 import { assert } from 'chai';
 
-
-const testTask = {
-    id: 1,
-    title: 'my task 1',
-    description: 'Test',
-    done: false,
-    deadline: '2024-01-01',
-    priority: 1,
-};
-
-const testTask2 = {
-    id: 2,
-    title: 'test task 2',
-    description: 'Some description',
-    done: true,
-    deadline: '2024-01-05',
-    priority: 2,
-};
-
 const newTask = {
     id: 3,
     title: 'my test task 3',
@@ -30,7 +11,6 @@ const newTask = {
     priority: 3,
 };
 
-const testTasks = [newTask, testTask, testTask2]
 
 async function logAndFind(driver, selector) {
     const element = await driver.findElement(By.css(selector));
@@ -57,30 +37,6 @@ describe('Task Manager Tests', function () {
         await driver.get('http://localhost:5173');
         const searchResultItems = await driver.findElements(By.css(`${mainContainerSelector} > a`));
         const searchResultItemsLength = searchResultItems.length;
-        /*for (const task of testTasks) {
-            await driver.findElement(By.css('button[data-tooltip-target="tooltip-create-task"]')).click();
-            await driver.findElement(By.css('input[name="title"]')).sendKeys(task.title);
-            await driver.findElement(By.css('textarea[name="description"]')).sendKeys(task.description);
-            await driver.findElement(By.css('input[name="deadline"]')).sendKeys(task.deadline);
-            await driver.findElement(By.css('input[name="priority"]')).sendKeys(task.priority.toString());
-            await driver.findElement(By.css('button[type="submit"]')).click();
-            //await driver.get('http://localhost:5173');
-        }*/
-        /*await driver.findElement(By.css('button[data-tooltip-target="tooltip-create-task"]')).click();
-        await driver.findElement(By.css('input[name="title"]')).sendKeys(testTask.title);
-        await driver.findElement(By.css('textarea[name="description"]')).sendKeys(testTask.description);
-        await driver.findElement(By.css('input[name="deadline"]')).sendKeys(testTask.deadline);
-        await driver.findElement(By.css('input[name="priority"]')).sendKeys(testTask.priority.toString());
-        await driver.findElement(By.css('button[type="submit"]')).click();
-        await driver.get('http://localhost:5173');*/
-
-        /*await driver.findElement(By.css('button[data-tooltip-target="tooltip-create-task"]')).click();
-        await driver.findElement(By.css('input[name="title"]')).sendKeys(testTask2.title);
-        await driver.findElement(By.css('textarea[name="description"]')).sendKeys(testTask2.description);
-        await driver.findElement(By.css('input[name="deadline"]')).sendKeys(testTask2.deadline);
-        await driver.findElement(By.css('input[name="priority"]')).sendKeys(testTask2.priority.toString());
-        await driver.findElement(By.css('button[type="submit"]'), 1000).click();
-        await driver.get('http://localhost:5173');*/
 
         await driver.findElement(By.css('button[data-tooltip-target="tooltip-create-task"]')).click();
         await driver.findElement(By.css('input[name="title"]')).sendKeys(newTask.title);
