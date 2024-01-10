@@ -19,5 +19,6 @@ Go to the testcafe directory and run command: **testcafe chrome tests.ts**
 
 Install selenium webdriver: **npm install selenium-webdriver**
 Install mocha testrunner: **npm install mocha**
+Install chai assertion library: **npm install chai**
 
-Run: **npx mocha [Path to test file]**
+Go to ui/tests/selenium and run: **npx mocha tests.js**
