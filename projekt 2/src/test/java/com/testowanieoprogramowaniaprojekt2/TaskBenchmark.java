@@ -4,11 +4,13 @@ import com.testowanieoprogramowaniaprojekt2.controllers.TaskController;
 import com.testowanieoprogramowaniaprojekt2.entities.Task;
 import com.testowanieoprogramowaniaprojekt2.services.TaskService;
 import com.testowanieoprogramowaniaprojekt2.testData.TestDataBuilder;
+import org.junit.jupiter.api.Assertions;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Warmup(iterations = 2, time = 1)
-@Measurement(iterations = 10, time = 1)
+@Measurement(iterations = 20, time = 1)
 @Fork(value = 1)
 public class TaskBenchmark {
 
@@ -74,6 +76,15 @@ public class TaskBenchmark {
     public static void getByIdBenchmark(BenchmarkState state, Blackhole blackhole) {
         Long taskId = state.tasks.get(0).getId();
         blackhole.consume(state.taskController.getById(taskId));
+    }
+
+    @Benchmark
+    public static void getById_Fail(BenchmarkState state, Blackhole blackhole) {
+        Long taskId = 0L;
+        blackhole.consume(
+                Assertions.assertThrows(ResponseStatusException.class,
+                        () -> state.taskController.getById(taskId))
+        );
     }
 
     @Benchmark
@@ -189,6 +200,10 @@ public class TaskBenchmark {
     @Benchmark
     public static void getUncompletedServiceBenchmark(BenchmarkState state, Blackhole blackhole) {
         blackhole.consume(state.taskService.getUncompletedTasks());
+    }
+
+    public static void main(String[] args) throws Exception {
+        org.openjdk.jmh.Main.main(args);
     }
 
     @SpringBootApplication
