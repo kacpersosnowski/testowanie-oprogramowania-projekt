@@ -1,0 +1,10 @@
+{
+  "simulation": "com.testowanieoprogramowaniaprojekt2.gatling.GetFilteredByPrioritySimulation",
+  "simulationId": "getfilteredbyprioritysimulation",
+  "start": 1704918695657,
+  "description": "",
+  "scenarios": ["Get tasks filtered by priority"],
+  "assertions": [
+
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "simulation": "com.testowanieoprogramowaniaprojekt2.gatling.GetAllChronologicallySimulation",
+  "simulationId": "getallchronologicallysimulation",
+  "start": 1704917796109,
+  "description": "",
+  "scenarios": ["Get tasks chronologically"],
+  "assertions": [
+
+  ]
+}
