@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "mocha": "^10.2.0",
+    "testcafe": "^3.5.0"
+  }
+}
